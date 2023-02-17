@@ -1,0 +1,189 @@
+{
+  "ACADIA":{ 
+      "parkCode" : "ACAD", 
+      "type" : "NP"}, 
+  "ARCHES": {
+      "parkCode" : "ARCH", 
+      "type" : "NP"}, 
+  "BADLANDS": {
+      "parkCode" : "BADL", 
+      "type" : "NP"}, 
+  "BIG BEND": {
+      "parkCode" : "BIBE", 
+      "type" : "NP"}, 
+  "BISCAYNE": {
+      "parkCode" : "BISC", 
+      "type" : "NP"}, 
+  "BLACK CANYON OF THE GUNNISON": {
+      "parkCode" : "BLCA", 
+      "type" : "NP"}, 
+  "BRYCE CANYON": {
+      "parkCode" : "BRCA", 
+      "type" : "NP"}, 
+  "CANYONLANDS": {
+      "parkCode" : "CANY", 
+      "type" : "NP"}, 
+  "CAPITOL REEF": {
+      "parkCode" : "CARE", 
+      "type" : "NP"}, 
+  "CARLSBAD CAVERNS": {
+      "parkCode" : "CAVE", 
+      "type" : "NP"}, 
+  "CHANNEL ISLANDS": {
+      "parkCode" : "CHIS", 
+      "type" : "NP"}, 
+  "CONGAREE": { 
+      "parkCode" : "CONG", 
+      "type" : "NP"}, 
+  "CRATER LAKE": {
+      "parkCode" : "CRLA", 
+      "type" : "NP"}, 
+  "CUYAHOGA VALLEY": { 
+      "parkCode" : "CUVA", 
+      "type" : "NP"}, 
+  "DEATH VALLEY": {
+      "parkCode" : "DEVA", 
+      "type" : "NP"}, 
+  "DENALI": { 
+      "parkCode" : "DENA", 
+      "type" : "NP"}, 
+  "DRY TORTUGAS": { 
+      "parkCode" : "DRTO", 
+      "type" : "NP"}, 
+  "EVERGLADES": { 
+      "parkCode" : "EVER", 
+      "type" : "NP"}, 
+  "GATES OF THE ARCTIC": {
+      "parkCode" : "GAAR", 
+      "type" : "NP"}, 
+  "GLACIER": {
+      "parkCode" : "GLAC", 
+      "type" : "NP"}, 
+  "GLACIER BAY": {
+      "parkCode" : "GLBA", 
+      "type" : "NP"}, 
+  "GRAND CANYON": {
+      "parkCode" : "GRCA", 
+      "type" : "NP"}, 
+  "GRAND TETON": {
+      "parkCode" : "GRTE", 
+      "type" : "NP"}, 
+  "GREAT BASIN": {
+      "parkCode" : "GRBA", 
+      "type" : "NP"}, 
+  "GREAT SAND DUNES": {
+      "parkCode" : "GRSA", 
+      "type" : "NP"}, 
+  "GREAT SMOKY MOUNTAINS": { 
+      "parkCode" : "GRSM", 
+      "type" : "NP"}, 
+  "GUADALUPE MOUNTAINS": {
+      "parkCode" : "GUMO", 
+      "type" : "NP"}, 
+  "HALEAKALA": {
+      "parkCode" : "HALE", 
+      "type" : "NP"}, 
+  "HAWAII VOLCANOES": {
+      "parkCode" : "HAVO", 
+      "type" : "NP"}, 
+  "HOT SPRINGS": { 
+      "parkCode" : "HOSP", 
+      "type" : "NP"}, 
+  "INDIANA DUNES":{ 
+      "parkCode" : "INDU", 
+      "type" : "NP"}, 
+  "ISLE ROYALE": { 
+      "parkCode" : "ISRO", 
+      "type" : "NP"}, 
+  "JOSHUA TREE": {
+      "parkCode" : "JOTR", 
+      "type" : "NP"}, 
+  "KATMAI": { 
+      "parkCode" : "KATM", 
+      "type" : "NP"}, 
+  "KENAI  FJORDS": { 
+      "parkCode" : "KEFJ", 
+      "type" : "NP"}, 
+  "KINGS CANYON": {
+      "parkCode" : "SEKI", 
+      "type" : "NP"}, 
+  "KOBUK VALLEY": {
+      "parkCode" : "KOVA", 
+      "type" : "NP"}, 
+  "LAKE CLARK": { 
+      "parkCode" : "LACL", 
+      "type" : "NP"}, 
+  "LASSEN VOLCANIC": {
+      "parkCode" : "LAVO", 
+      "type" : "NP"}, 
+  "MAMMOTH CAVE": { 
+      "parkCode" : "MACA", 
+      "type" : "NP"}, 
+  "MESA VERDE": {
+      "parkCode" : "MEVE", 
+      "type" : "NP"}, 
+  "MOUNT RAINIER": {
+      "parkCode" : "MORA", 
+      "type" : "NP"}, 
+  "NATIONAL PARK  OF AMERICAN SAMOA":{ 
+      "parkCode" : "NPSA", 
+      "type" : "NP"}, 
+  "NEW RIVER GORGE":{ 
+      "parkCode" : "NERI", 
+      "type" : "NP"}, 
+  "NORTH CASCADES": {
+      "parkCode" : "NOCA", 
+      "type" : "NP"}, 
+  "OLYMPIC": {
+      "parkCode" : "OLYM", 
+      "type" : "NP"}, 
+  "PETRIFIED FOREST": {
+      "parkCode" : "PEFO",
+      "type" : "NP"}, 
+  "PINNACLES": {
+      "parkCode" : "PINN",
+      "type" : "NP"}, 
+  "REDWOOD":{ 
+      "parkCode" : "REDW", 
+      "type" : "NP"}, 
+  "ROCKY MOUNTAIN": {
+      "parkCode" : "ROMO", 
+      "type" : "NP"}, 
+  "SAGUARO": {
+      "parkCode" : "SAGU", 
+      "type" : "NP"}, 
+  "SEQUOIA": {
+      "parkCode" : "SEKI", 
+      "type" : "NP"}, 
+  "SHENANDOAH":{ 
+      "parkCode" : "SHEN", 
+      "type" : "NP"}, 
+  "THEODORE ROOSEVELT": { 
+      "parkCode" : "THRO", 
+      "type" : "NP"}, 
+  "VIRGIN ISLANDS": { 
+      "parkCode" : "VIIS", 
+      "type" : "NP"}, 
+  "VOYAGEURS": { 
+      "parkCode" : "VOYA", 
+      "type" : "NP"}, 
+  "WHITE SANDS":{ 
+      "parkCode" : "WHSA", 
+      "type" : "NP"}, 
+  "WIND CAVE": { 
+      "parkCode" : "WICA", 
+      "type" : "NP"}, 
+  "WRANGELL-ST. ELIAS": { 
+      "parkCode" : "WRST", 
+      "type" : "NP"}, 
+  "YELLOWSTONE": {
+      "parkCode" : "YELL", 
+      "type" : "NP"}, 
+  "YOSEMITE": {
+      "parkCode" : "YOSE", 
+      "type" : "NP"}, 
+  "ZION": {
+      "parkCode" : "ZION", 
+      "type" : "NP"}
+  }
+  

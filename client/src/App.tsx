@@ -16,11 +16,11 @@ function App() {
   return (
     <div className="App">
       Hello World
-      {(typeof backendData.users === 'undefined') ? (
+      {(typeof backendData === 'undefined') ? (
         <p>Loading...</p>
       ):(
-        backendData.users.map((user:Object, i:number) => {
-          return <p key={i}> {user} </p>
+        backendData.map((code, i:number) => {
+          return <p key={i}> {code} </p>
         })
       )}
     </div>
