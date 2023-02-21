@@ -6,25 +6,21 @@ import {readFile} from 'fs/promises'
 dotenv.config();
 const app = express();
 
-const getParkCodes = async() => {
-    const parkCodes = [];
+const getParkData = async() => {
     const parkData = JSON.parse( await readFile(
         new URL('./park-data.json', import.meta.url)
     ))
-    for (const park in parkData){
-        parkCodes.push(parkData[park].parkCode)
-    }
-    return parkCodes;
+    return parkData;
 }
 
 const endpoints = async() => {
-    const parkCodes = await getParkCodes();
+    const parkData = await getParkData();
 
-    parkCodes.forEach((code) => {
-        app.get(`/api/${code}`, async (req, res, next) => {
+    Object.keys(parkData).forEach((np) => {
+        app.get(`/api/${parkData[np].parkCode}`, async (req, res, next) => {
             const response = await axios({
                 method: "GET",
-                url: `https://developer.nps.gov/api/v1/newsreleases?parkCode=${code}`,
+                url: `https://developer.nps.gov/api/v1/newsreleases?parkCode=${parkData[np].parkCode}`,
                 headers: {"X-Api-Key": process.env.APP_API_KEY}
             })
             res.json(response.data)
@@ -32,13 +28,12 @@ const endpoints = async() => {
     })
 }
 
+app.set("json spaces", 4)
 app.get("/api", async (req, res, next) => {
-    const parkCodes = await getParkCodes();
-    res.json(parkCodes)
+    const parkData = await getParkData();
+    res.json(parkData)
     endpoints();
 })   
-
-app.set("json spaces", 4)
 
 app.listen(5000, () => {
     console.log("Server started on port 5000")

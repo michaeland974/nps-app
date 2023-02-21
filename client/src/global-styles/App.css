@@ -1,0 +1,10 @@
+#root, html{
+  font-family: 'Courier New', Courier, monospace;
+
+  --background: #D5BF86;
+  --highlight:#C84630;
+  --main:#31572C;
+  --secondary:#6C809A;
+  /*            #8FA9CC */
+  background-color: var(--main);
+}
