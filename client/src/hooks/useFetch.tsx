@@ -13,13 +13,13 @@ export type ParkInfo = {
  */
 
 export type ParkList = {
-  parkName: ParkInfo;
+  [parkName: string]: ParkInfo;
 }
 
 export const useFetch = (url: string, 
-                         defaultValue: Object, 
+                        // defaultValue: ParkList, 
                          dependencies: []) => {
-  const [data, setData] = useState<ParkList | Object>(defaultValue)
+  const [data, setData] = useState<ParkList>({})
 
   const fetchData = async() => {
     const response = await fetch(url);

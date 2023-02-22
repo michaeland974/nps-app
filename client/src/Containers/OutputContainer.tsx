@@ -1,5 +1,11 @@
-import React from "react";
+import * as React from 'react';
+import styles from './styles/OutputContainer.module.css'
+
 
 export const OutputContainer = () => {
-  return (<div className="container"></div>)
+  return (
+    <div className={styles["container"]}>
+      Output
+    </div>
+    )
 }

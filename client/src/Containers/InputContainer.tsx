@@ -1,17 +1,25 @@
-import React from "react";
+import * as React from 'react';
+import {useState, useContext} from "react";
 import { InputBar } from "../Components/InputBar";
-import { useClickOutside } from "../hooks/useClickOutside";
-import { useFetch } from "../hooks/useFetch";
+import { InputValueContext } from './Main';
+import styles from './styles/InputContainer.module.css'
 
-export const InputContainer = () => {
-  //pass up props in here, so submit button can read input value of InputBar
+type Props = {
+  onSubmit: React.MouseEventHandler<HTMLButtonElement>
+}
 
-  const Comp = useClickOutside(InputBar)
+export const InputContainer: React.FC<Props> = ({onSubmit}) => {
+  const [isOpen, setOpen] = useState(false)
+  const {inputValue, setInputValue} = useContext(InputValueContext)
 
   return (
-    <div className="container">
-      <Comp />
-      <button>Submit</button>
+    <div className={styles["container"]}>
+      Input 
+      <InputBar isOpen={isOpen} 
+                setOpen={setOpen}
+                 />
+      <button className="submit"
+              onClick={onSubmit}>Submit</button>
     </div>
   )
 }

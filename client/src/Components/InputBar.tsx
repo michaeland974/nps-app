@@ -1,31 +1,29 @@
-import React, {MouseEvent, useState} from "react";
+import * as React from "react"
+import {MouseEvent, useContext} from "react";
+import { OptionsContext, InputValueContext } from './../Containers/Main';
 import { useFetch  } from "../hooks/useFetch";
-import { Props as InputProps} from "../hooks/useClickOutside";
 import styles from './styles/InputBar.module.css'
 
-export const InputBar = React.forwardRef<HTMLElement, InputProps>(
-  ({isOpen, setOpen}, ref) => {
-  const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useFetch("/api", {}, []);
-  const testOpt = ["redfox", "purple", "red"]
+type Props = {
+  isOpen: boolean,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+}
 
-  const createOptions = () => {
-    //const options = await useFetch;
-  }
+export const InputBar: React.FC<Props> = ({isOpen, setOpen}) => {
+ // const [options, setOptions] = useFetch("/api", {}, []);
+  const {testOptionsList} = useContext(OptionsContext)
+  const {inputValue, setInputValue} = useContext(InputValueContext)
 
   const onInputBarClick = (e: MouseEvent) => {
     setOpen(prevValue => !prevValue)
-    /*
-    * Error Handling: 
-    * if user enters invalid input then clicks on input bar, 
-    * dropdown will stay hidden */
-    if(inputValue !== ''){
-       setOpen(true);
-    }
   }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    if(inputValue !== ''){
+      e.stopPropagation();
+      setOpen(true);
+    }
   }
 
   const onOptionSelect = (option:string) => {
@@ -35,7 +33,7 @@ export const InputBar = React.forwardRef<HTMLElement, InputProps>(
   }
 
   const clearInput = (e: MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation()
     setInputValue("");
     setOpen(true) //Possibly change for better UX
     // tell parent onChange is clear onChange("")
@@ -43,36 +41,40 @@ export const InputBar = React.forwardRef<HTMLElement, InputProps>(
 
   const toggleClass = (toggleCondition: boolean,
                        defaultName:string, 
-                      toggledName: string) => {
+                       toggledName: string) => {
     if(toggleCondition){
       return `${styles[defaultName]} ${styles[toggledName]}`
     }
     return styles[defaultName]
   }
 
+  const renderOptions = () => {
+    
+  }
+
   return(
-    <div className={styles["container"]} 
-         ref={ref as React.RefObject<HTMLDivElement>}
-         > 
+    <div className={styles["container"]}
+         onBlur={() => setOpen(false)}>
+      
       <div className={styles["bar-container"]}
-           onClick={onInputBarClick}
-           >
+           onClick={onInputBarClick}>
+        
         <input className={styles["bar"]} 
                type="text" 
                placeholder="Look for"
                value={inputValue} 
-               onChange={handleInput}
-               />
+               onChange={handleInput}/>
         <div className={styles["arrow-container"]}>
           <button className={styles["arrow"]}></button>
-        </div>
+        </div> 
 
         <button className={toggleClass((inputValue===''), "clear-button", "hide")}
-                onClick={clearInput}> x </button>
-
+                onClick={clearInput}> x 
+        </button>
       </div>
+
         <div className={toggleClass((!isOpen), "dropdown", "hide")}>
-          {testOpt.filter((item:string) => {
+          {testOptionsList?.filter((item:string) => {
             const searchItem = inputValue.toLowerCase();
             // item.value?
             const v = item.toLowerCase();
@@ -81,18 +83,20 @@ export const InputBar = React.forwardRef<HTMLElement, InputProps>(
           }).map((option:string, i:number) => {
             return (<div key={i}
                         className={styles["option"]}
-                        onClick={() => onOptionSelect(option)}
-                    >{option}</div>)
-          })
-          }
-          
+                      //onMouseDown prevents onBlur error
+                        onMouseDown={ (e) => {
+                          e.preventDefault()
+                          onOptionSelect(option)
+                        }}>{option}</div>)
+          })}
         </div>
     </div>
   );
 }
 
 
-);
+
+
 
   /* <div>{typeof options === undefined ? "Loading..." : 
         Object.entries(options).map((park, i:number) => {
