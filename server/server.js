@@ -24,9 +24,9 @@ app.get("/api", async (req, res, next) => {
 
 app.get("/api/recent", async (req, res, next) => {    
     const url = new URL("", "https://developer.nps.gov/api/v1/newsreleases?")
-          url.searchParams.set("limit", 500)
-    const response2 = await apiReq(url);
-    const data = response2.data
+          url.searchParams.set("limit", 150)
+    const response = await apiReq(url);
+    const data = response.data
     const parkCodes = await getParkCodes();
 
     /** API request to /api/v1/newsreleases responds with

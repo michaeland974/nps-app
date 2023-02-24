@@ -1,17 +1,11 @@
 import * as React from "react"
-import {MouseEvent, useContext} from "react";
+import {MouseEvent, useContext, useState} from "react";
 import { OptionsContext, InputValueContext } from './../Containers/Main';
-import { useFetch  } from "../hooks/useFetch";
 import styles from './styles/InputBar.module.css'
 
-type Props = {
-  isOpen: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-}
-
-export const InputBar: React.FC<Props> = ({isOpen, setOpen}) => {
- // const [options, setOptions] = useFetch("/api", {}, []);
-  const {testOptionsList} = useContext(OptionsContext)
+export const InputBar: React.FC = () => {
+  const [isOpen, setOpen] = useState(false)
+  const {options} = useContext(OptionsContext)
   const {inputValue, setInputValue} = useContext(InputValueContext)
 
   const onInputBarClick = (e: MouseEvent) => {
@@ -49,7 +43,7 @@ export const InputBar: React.FC<Props> = ({isOpen, setOpen}) => {
   }
 
   const renderOptions = () => {
-    
+
   }
 
   return(
@@ -74,7 +68,7 @@ export const InputBar: React.FC<Props> = ({isOpen, setOpen}) => {
       </div>
 
         <div className={toggleClass((!isOpen), "dropdown", "hide")}>
-          {testOptionsList?.filter((item:string) => {
+          {options?.filter((item:string) => {
             const searchItem = inputValue.toLowerCase();
             // item.value?
             const v = item.toLowerCase();

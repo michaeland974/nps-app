@@ -5,7 +5,7 @@ import './global-styles/App.css';
 import logo from './images/noun-trees.png'
 
 //Header image <img src={"/images/noun-trees.png"} id="logo" alt="trees"></img>
-const App= () => {
+const App = () => {
   
   return (
     <div className="App">
