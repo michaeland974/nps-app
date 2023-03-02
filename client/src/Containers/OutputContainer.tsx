@@ -1,63 +1,30 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useFetch } from '../hooks/useFetch';
+import { Json, Article } from './Main';
 import { RowDisplay } from '../Components/RowDisplay';
 import { Card } from '../Components/Card';
 import styles from './styles/OutputContainer.module.css'
-
-export interface Json extends Object{
-  data?: Object[]
-}
 
 type Props = {
   newsDataByPark?: [], 
   setNewsDataByPark?: React.Dispatch<React.SetStateAction<[]>>
 }
 
-type Park = {
-  parkCode?: string,
-  fullName?: string,
-  url?: string
-}
-
-export interface Article{
-  parkName?: string,
-  title?: string,
-  releaseDate?: string //or date
-  desc?: string,
-  image?: {
-    url?: string,
-    caption?: string,
-    altText?: string
-  },
-  relatedParks?: Park[]
-} 
-
 type DisplayType = {
   type: 'rows' | 'card'
 }
-
+                                                //set display
 export const OutputContainer: React.FC<Props> = ({newsDataByPark, 
                                                   setNewsDataByPark}) => {
   const [cardProps, setCardProps] = useState<Article>({});                                                 
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});                                                 
   const [display, setDisplay] = useState<Article[]>([]);
-  //const [newsDataRecent, setNewsDataRecent] = useFetch("/api/recent", []);
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("/api/recent");
-      const json: Promise<Json> = (await response.json())
-      const data: Article[] | undefined = (await json).data
-      
-      let recentArticlesList: Article[] = [];
-
-      if(typeof data !== undefined && data?.length !== 0){
-        recentArticlesList = data!.slice(0, 25);
-      }
-      setDisplay(recentArticlesList)
-    })()
-  }, [])
-
+  const [{data2, fetchData, 
+          articleDisplay, setArticleDisplay, 
+          handleArticleData}] = useFetch("/api/recent", [])
+ 
   const passProps = (obj: Article) => {
     const props = { parkName: obj.relatedParks![0].fullName,
                     title: obj.title,
@@ -77,8 +44,8 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
   }
 
   const RowDisplayMapped = () => {
-    const isEmpty = (display.length === 0)                         
-    const rowMap = display.map((article, i) => {
+    const isEmpty = (articleDisplay.length === 0)                         
+    const rowMap = articleDisplay.map((article, i) => {
       return (
         <RowDisplay key={i}
                     onClick={() => handleRowClick(article)}
@@ -103,7 +70,7 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
   }
 
   return (
-    <div className={styles["display-container"]}>
+    <div className={styles["container"]}>
       <h1>National Park Recent News</h1>
        <>{renderDisplaySwitch(displayType.type)}</>
     </div>

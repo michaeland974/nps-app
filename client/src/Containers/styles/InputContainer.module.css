@@ -1,3 +1,4 @@
 .container{
   border: 2px solid darkblue;
+  flex: 3;
 }

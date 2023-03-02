@@ -1,5 +1,6 @@
 import { InputContainer } from './Containers/InputContainer';
 import { Main } from './Containers/Main';
+import { Header } from './Components/Header';
 import './global-styles/reset.css'
 import './global-styles/App.css';
 import logo from './images/noun-trees.png'
@@ -9,6 +10,7 @@ const App = () => {
   
   return (
     <div className="App">
+      <Header />
       <Main />
     </div>
   );

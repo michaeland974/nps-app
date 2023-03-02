@@ -5,7 +5,7 @@ import styles from './styles/InputBar.module.css'
 
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
-  const {options} = useContext(OptionsContext)
+  const {parkData} = useContext(OptionsContext)
   const {inputValue, setInputValue} = useContext(InputValueContext)
 
   const onInputBarClick = (e: MouseEvent) => {
@@ -68,20 +68,23 @@ export const InputBar: React.FC = () => {
       </div>
 
         <div className={toggleClass((!isOpen), "dropdown", "hide")}>
-          {options?.filter((item:string) => {
+          {parkData?.filter((item:string[]) => {
             const searchItem = inputValue.toLowerCase();
             // item.value?
-            const v = item.toLowerCase();
+            const v = item[0].toLowerCase();
             return v.startsWith(searchItem)
 
-          }).map((option:string, i:number) => {
-            return (<div key={i}
-                        className={styles["option"]}
-                      //onMouseDown prevents onBlur error
-                        onMouseDown={ (e) => {
-                          e.preventDefault()
-                          onOptionSelect(option)
-                        }}>{option}</div>)
+          }).map((option:string[], i:number) => {
+                const parkName = option[0]
+                return (<div key={i}
+                            className={styles["option"]}
+                          //onMouseDown prevents onBlur error
+                            onMouseDown={ (e) => {
+                              e.preventDefault()
+                              onOptionSelect(parkName)
+                            }}>
+                              {parkName}
+                        </div>)
           })}
         </div>
     </div>

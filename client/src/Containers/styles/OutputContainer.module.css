@@ -1,6 +1,7 @@
-.display-container{
-  border: 2px solid darkgreen;
-  width: 500px;
-  height: 500px;
+.container{
+  border: 10px solid darkgreen;
+  /* width: 500px;
+  height: 500px; */
   padding: 1rem;
+  flex: 5;
 }

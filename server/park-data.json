@@ -55,7 +55,10 @@
       "type" : "NP"}, 
   "GATES OF THE ARCTIC": {
       "parkCode" : "GAAR", 
-      "type" : "NP"}, 
+      "type" : "NP"},
+  "GATEWAY ARCH": {
+      "parkCode": "JEFF",
+      "type": "NP"},
   "GLACIER": {
       "parkCode" : "GLAC", 
       "type" : "NP"}, 
@@ -101,7 +104,7 @@
   "KATMAI": { 
       "parkCode" : "KATM", 
       "type" : "NP"}, 
-  "KENAI  FJORDS": { 
+  "KENAI FJORDS": { 
       "parkCode" : "KEFJ", 
       "type" : "NP"}, 
   "KINGS CANYON": {
@@ -125,7 +128,7 @@
   "MOUNT RAINIER": {
       "parkCode" : "MORA", 
       "type" : "NP"}, 
-  "NATIONAL PARK  OF AMERICAN SAMOA":{ 
+  "NATIONAL PARK OF AMERICAN SAMOA":{ 
       "parkCode" : "NPSA", 
       "type" : "NP"}, 
   "NEW RIVER GORGE":{ 

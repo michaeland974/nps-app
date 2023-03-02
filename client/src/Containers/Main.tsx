@@ -1,12 +1,35 @@
 import * as React from 'react';
-import { useState, createContext } from 'react';
-import { useFetch } from '../hooks/useFetch';
+import { useState, useEffect, createContext } from 'react';
 import { InputContainer } from "./InputContainer";
 import { OutputContainer } from "./OutputContainer";
 import styles from './styles/Main.module.css'
 
+export interface Json extends Object{
+  data?: Object[]
+}
+
+type Park = {
+  parkCode?: string,
+  type?: string,
+  fullName?: string,
+  url?: string
+}
+
+export interface Article{
+  parkName?: string,
+  title?: string,
+  releaseDate?: string //or date
+  desc?: string,
+  image?: {
+    url?: string,
+    caption?: string,
+    altText?: string
+  },
+  relatedParks?: Park[]
+} 
+
 type OptionsContextType = {
-  options?: string[] | [],
+  parkData?: string[][] | [],
 }
 
 type InputValueContextType = {
@@ -21,28 +44,46 @@ export const InputValueContext = createContext<InputValueContextType>(
 
 export const Main: React.FC = () => {
   
-  const getParkNames = (data: Object | (() => Promise<void>)): string[] => {
-    const parkNames: string[] = [];
-    
-    Object.entries(data).map((park) => {
-      const [parkName, parkCode] = [park[0], park[1].parkCode]
-      parkNames.push(parkName)
+  const [inputValue, setInputValue] = useState('');
+  const [inputValueCode, setInputValueCode] = useState('');
+  const [parkData, setParkData] = useState<Array<Array<string>>>([])
+
+  useEffect(() => {
+    (async () => {
+      const keys: Array<Array<string>> = [];
+      const response = await fetch("/api");
+      const parkList: Promise<{[parkName: string]: Park}> = (await response.json())
+      
+      Object.entries(parkList).map((park, i) => {
+        const [parkName, parkCode] = [park[0], park[1].parkCode]
+        keys.push([parkName, parkCode])
+      })
+      setParkData(keys)
+    })()
+  }, [])
+
+  const getParkCodeFromInput = (options: Array<Array<string>>) => {
+      options.findIndex((item) => {
+        const parkName = item[0];
+        const parkCode = item[1]
+      
+      if(parkName === inputValue){
+        //console.log(parkCode)
+        setInputValueCode(parkCode)
+        //useEffect
+      }
     })
-    return parkNames
   }
 
-  const [inputValue, setInputValue] = useState('');
-  const [parkData, setParkData] = useFetch("/api", []);
-  const options = getParkNames(parkData)
-  //const [newsData, setNewsData] = useFetch("/api/recent", [])
-  const [newsDisplay, setNewsDisplay] = useState([])
-
   return (
-    <OptionsContext.Provider value={{options}}>
+    <OptionsContext.Provider value={{parkData}}>
       <InputValueContext.Provider value={{inputValue, setInputValue}}>
         
         <div className={styles["container"]}>
-          <InputContainer onSubmit={() => console.log(inputValue)}/>
+          <InputContainer onSubmit={() => {
+            getParkCodeFromInput(parkData)
+          }}/>
+
           <OutputContainer />
         </div>
       
@@ -50,12 +91,3 @@ export const Main: React.FC = () => {
     </OptionsContext.Provider>
     )
 }
-
-// export type ParkInfo = {
-//   parkCode: string;
-//   type: string;
-// }
-
-// export type ParkList = {
-// [parkName: string]: ParkInfo;
-// }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styles from './styles/RowDisplay.module.css'
-import { Article } from '../Containers/OutputContainer'
+import { Article } from '../Containers/Main'
 
 interface Props extends Article {
   onClick?: (React.MouseEventHandler<HTMLDivElement>)
