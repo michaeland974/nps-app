@@ -5,7 +5,7 @@ import styles from './styles/InputBar.module.css'
 
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
-  const {parkData} = useContext(OptionsContext)
+  const {parkOptions} = useContext(OptionsContext)
   const {inputValue, setInputValue} = useContext(InputValueContext)
 
   const onInputBarClick = (e: MouseEvent) => {
@@ -30,7 +30,6 @@ export const InputBar: React.FC = () => {
     e.stopPropagation()
     setInputValue("");
     setOpen(true) //Possibly change for better UX
-    // tell parent onChange is clear onChange("")
   }
 
   const toggleClass = (toggleCondition: boolean,
@@ -42,14 +41,31 @@ export const InputBar: React.FC = () => {
     return styles[defaultName]
   }
 
-  const renderOptions = () => {
-
+  const renderOptions = (list: string[][] | [] | undefined) => {
+  
+    const filterOnChange = list?.filter((options: string[]) => {
+      const searchItem = inputValue.toLowerCase();
+      const listOption = options[0].toLowerCase();
+        return listOption.startsWith(searchItem)
+    })
+    
+    return filterOnChange?.map((options: string[], i: number) => {
+        const parkName = options[0]
+        return (
+          <li key={i}
+               className={styles["option"]}
+             //onMouseDown prevents onBlur error
+               onMouseDown={(e) => {
+                  e.preventDefault()
+                  onOptionSelect(parkName) }} >   
+            {parkName}
+          </li> )
+    })
   }
 
   return(
     <div className={styles["container"]}
          onBlur={() => setOpen(false)}>
-      
       <div className={styles["bar-container"]}
            onClick={onInputBarClick}>
         
@@ -58,6 +74,7 @@ export const InputBar: React.FC = () => {
                placeholder="Look for"
                value={inputValue} 
                onChange={handleInput}/>
+
         <div className={styles["arrow-container"]}>
           <button className={styles["arrow"]}></button>
         </div> 
@@ -67,37 +84,10 @@ export const InputBar: React.FC = () => {
         </button>
       </div>
 
-        <div className={toggleClass((!isOpen), "dropdown", "hide")}>
-          {parkData?.filter((item:string[]) => {
-            const searchItem = inputValue.toLowerCase();
-            // item.value?
-            const v = item[0].toLowerCase();
-            return v.startsWith(searchItem)
-
-          }).map((option:string[], i:number) => {
-                const parkName = option[0]
-                return (<div key={i}
-                            className={styles["option"]}
-                          //onMouseDown prevents onBlur error
-                            onMouseDown={ (e) => {
-                              e.preventDefault()
-                              onOptionSelect(parkName)
-                            }}>
-                              {parkName}
-                        </div>)
-          })}
-        </div>
+      <ul className={toggleClass((!isOpen), "dropdown", "hide")}>
+        {renderOptions(parkOptions)}
+      </ul>
     </div>
   );
 }
 
-
-
-
-
-  /* <div>{typeof options === undefined ? "Loading..." : 
-        Object.entries(options).map((park, i:number) => {
-          const [parkName, parkCode] = [park[0], park[1].parkCode]
-         
-          return <div key={i}>{`Park Name: ${parkName} | Code: ${parkCode}`}</div>
-        })}</div> */

@@ -1,7 +1,9 @@
 .container{
   border: 10px solid darkgreen;
-  /* width: 500px;
-  height: 500px; */
   padding: 1rem;
+  overflow-y: scroll;
+  
   flex: 5;
+  display: flex;
+  flex-direction: column;
 }

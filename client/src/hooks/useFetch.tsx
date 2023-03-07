@@ -1,28 +1,52 @@
-import {useEffect, useState, useCallback, useMemo} from "react";
-import { Json } from "../Containers/Main";
+import {useEffect, useState, useCallback} from "react";
+import { Json, Park } from "../Containers/Main";
 import { Article } from "../Containers/Main";
 
 export const useFetch = (url: string, dependencies: []) => {
-  const [data2, setData] = useState<Promise<Json>>()
-  const [articleDisplay, setArticleDisplay] = useState<Article[]>([])
+  const [data, setData] = useState<Promise<Json>>()
+  const [contentDisplay, setContentDisplay] = useState<Article[]>([])
+  const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
 
-  const handleParkNamesData = (obj: Json) => {}
+  const handleParkOptions = async(obj: Promise<Json> | undefined) => {
+    const keys: Array<Array<string>> = [];
+    const parkList = await obj
 
-  //use callback
-  const handleArticleData = useCallback( 
+    if(parkList !== undefined){
+      Object.entries(parkList).map((park, i) => {
+        const [parkName, parkCode] = [park[0], park[1].parkCode]
+        keys.push([parkName, parkCode])
+      })
+      setParkOptions(keys)
+      console.log(keys)
+    }
+  }
+
+  const handleRecentNewsData = useCallback( 
     async(obj: Promise<Json> | undefined) => {
        const data: Article[] | undefined = (await obj)?.data
-       let list: Article[] | undefined = [];
+       let list: Article[] = [];
  
-         if(typeof data !== undefined && data?.length !== 0){
-          try{
-            list = data!.slice(0, 25);
-          } catch(error){ }
+         if(data !== undefined && data?.length !== 0){
+            try{
+              list = data!.slice(0, 25);
+            } 
+            catch(error){
+              if (error instanceof Error) {
+                return {
+                  message: error.message,
+                };
+              }
+            }
          } 
          console.log("from handle aritcle data")
-         setArticleDisplay(list)
+         setContentDisplay(list)
          return list
-        }, [])
+  }, [])
+
+  const handleNewsDataByPark = useCallback(
+    async(obj: Promise<Json> | undefined) => {
+
+    }, [])
   
   const fetchData = async(controller: AbortController | null) => {
     const response = await fetch(url, {
@@ -38,25 +62,16 @@ export const useFetch = (url: string, dependencies: []) => {
 
   useEffect(() => {
     let controller = new AbortController()
-
     fetchData(controller)
-    handleArticleData(data2)
 
     return () => controller.abort()
   }, dependencies)
-
-//   useEffect(() => {
-//     handleArticleData(data2)
-
-//     //return () => setLoading(false)
-//  }, [])
   
-  return [{ data2, fetchData, 
-            articleDisplay, setArticleDisplay, 
-            handleArticleData, handleParkNamesData
+  return [{ data, 
+            contentDisplay, setContentDisplay, 
+            parkOptions,
+            handleParkOptions,
+            handleRecentNewsData, 
+            handleNewsDataByPark
           }];
 } 
-
-// const response = await fetch("/api/recent");
-//       const json: Promise<Json> = (await response.json())
-//       const data: Article[] | undefined = (await json).data

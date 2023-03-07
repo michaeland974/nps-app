@@ -19,11 +19,14 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
                                                   setNewsDataByPark}) => {
   const [cardProps, setCardProps] = useState<Article>({});                                                 
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});                                                 
-  const [display, setDisplay] = useState<Article[]>([]);
 
-  const [{data2, fetchData, 
-          articleDisplay, setArticleDisplay, 
-          handleArticleData}] = useFetch("/api/recent", [])
+  const [{ data, 
+           contentDisplay, 
+           handleRecentNewsData }] = useFetch("/api/recent", [])
+
+  useEffect(() => {
+    handleRecentNewsData(data)
+  }, [data])
  
   const passProps = (obj: Article) => {
     const props = { parkName: obj.relatedParks![0].fullName,
@@ -43,9 +46,9 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
     setDisplayType({type: 'card'})
   }
 
-  const RowDisplayMapped = () => {
-    const isEmpty = (articleDisplay.length === 0)                         
-    const rowMap = articleDisplay.map((article, i) => {
+  const RowDisplayMapped = (displayList: Article[]) => {
+    const isEmpty = (displayList.length === 0)                         
+    const rowMap = displayList.map((article, i) => {
       return (
         <RowDisplay key={i}
                     onClick={() => handleRowClick(article)}
@@ -59,20 +62,23 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
     )
   }
 
-  const renderDisplaySwitch = (type: string) => {
+  const renderDisplaySwitch = (type: string, displayList: Article[]) => {
     switch(type){
       case 'rows':
-        return RowDisplayMapped()
+        return RowDisplayMapped(displayList)
       case 'card':
         return <Card onClick={() => { setDisplayType({type: 'rows'})} }
-                              {...cardProps} />
+                             {...cardProps} />
     }
   }
 
   return (
     <div className={styles["container"]}>
       <h1>National Park Recent News</h1>
-       <>{renderDisplaySwitch(displayType.type)}</>
+       <div className={styles["display"]}>
+          {renderDisplaySwitch(displayType.type, 
+                               contentDisplay )}
+       </div>
     </div>
     )
 }

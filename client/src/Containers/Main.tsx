@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { useState, useEffect, createContext } from 'react';
+import { useFetch } from '../hooks/useFetch';
 import { InputContainer } from "./InputContainer";
 import { OutputContainer } from "./OutputContainer";
 import styles from './styles/Main.module.css'
 
-export interface Json extends Object{
-  data?: Object[]
-}
-
-type Park = {
+export interface Park {
   parkCode?: string,
   type?: string,
   fullName?: string,
   url?: string
+}
+
+export interface Json extends Object{
+  data?: Object[],
+  parkName: Park
 }
 
 export interface Article{
@@ -29,7 +31,7 @@ export interface Article{
 } 
 
 type OptionsContextType = {
-  parkData?: string[][] | [],
+  parkOptions?: string[][] | []
 }
 
 type InputValueContextType = {
@@ -43,24 +45,19 @@ export const InputValueContext = createContext<InputValueContextType>(
   {} as InputValueContextType)
 
 export const Main: React.FC = () => {
-  
   const [inputValue, setInputValue] = useState('');
   const [inputValueCode, setInputValueCode] = useState('');
-  const [parkData, setParkData] = useState<Array<Array<string>>>([])
+
+  const [{ data, 
+           parkOptions, 
+           handleParkOptions }] = useFetch("/api", [])
 
   useEffect(() => {
-    (async () => {
-      const keys: Array<Array<string>> = [];
-      const response = await fetch("/api");
-      const parkList: Promise<{[parkName: string]: Park}> = (await response.json())
-      
-      Object.entries(parkList).map((park, i) => {
-        const [parkName, parkCode] = [park[0], park[1].parkCode]
-        keys.push([parkName, parkCode])
-      })
-      setParkData(keys)
-    })()
-  }, [])
+    handleParkOptions(data)
+  }, [data])
+
+  //useeffect 
+    //[] on inputvaluecode change
 
   const getParkCodeFromInput = (options: Array<Array<string>>) => {
       options.findIndex((item) => {
@@ -68,7 +65,7 @@ export const Main: React.FC = () => {
         const parkCode = item[1]
       
       if(parkName === inputValue){
-        //console.log(parkCode)
+        console.log(parkCode)
         setInputValueCode(parkCode)
         //useEffect
       }
@@ -76,12 +73,12 @@ export const Main: React.FC = () => {
   }
 
   return (
-    <OptionsContext.Provider value={{parkData}}>
+    <OptionsContext.Provider value={{parkOptions}}>
       <InputValueContext.Provider value={{inputValue, setInputValue}}>
         
         <div className={styles["container"]}>
           <InputContainer onSubmit={() => {
-            getParkCodeFromInput(parkData)
+            getParkCodeFromInput(parkOptions)
           }}/>
 
           <OutputContainer />
