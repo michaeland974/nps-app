@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { InputValueContext } from './Main';
 import { useFetch } from '../hooks/useFetch';
 import { Json, Article } from './Main';
 import { RowDisplay } from '../Components/RowDisplay';
@@ -7,26 +8,37 @@ import { Card } from '../Components/Card';
 import styles from './styles/OutputContainer.module.css'
 
 type Props = {
-  newsDataByPark?: [], 
-  setNewsDataByPark?: React.Dispatch<React.SetStateAction<[]>>
+  //newsDataByPark?: [], 
+ // setNewsDataByPark?: React.Dispatch<React.SetStateAction<[]>>
+ inputValueCode: string,
+ setInputValueCode?: React.Dispatch<React.SetStateAction<string>>
 }
 
 type DisplayType = {
   type: 'rows' | 'card'
 }
                                                 //set display
-export const OutputContainer: React.FC<Props> = ({newsDataByPark, 
-                                                  setNewsDataByPark}) => {
+export const OutputContainer: React.FC<Props> = ({inputValueCode, 
+                                                  setInputValueCode}) => {
   const [cardProps, setCardProps] = useState<Article>({});                                                 
-  const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});                                                 
+  const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
+  const [endpoint, setEndpoint] = useState("recent")  
+  const {inputValue, setInputValue} = useContext(InputValueContext)                                             
 
-  const [{ data, 
+  const [{ data,
            contentDisplay, 
-           handleRecentNewsData }] = useFetch("/api/recent", [])
+           handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) //on fetchUrl
 
   useEffect(() => {
-    handleRecentNewsData(data)
+    //fetchData
+    console.log(endpoint)
+    handleNewsData(data)
   }, [data])
+
+  useEffect(() => {
+    setEndpoint(inputValueCode)
+    //console.log(fetchUrl)
+  }, [inputValueCode])
  
   const passProps = (obj: Article) => {
     const props = { parkName: obj.relatedParks![0].fullName,
@@ -44,6 +56,30 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
   const handleRowClick = (obj: Article) => {
     passProps(obj)
     setDisplayType({type: 'card'})
+  }
+
+  const renderHeader = () => {
+    /* The Park name in the header will persist if the user
+       changes input without submitting
+     */ 
+    const currentPark = inputValue;
+    const currentParkCode = inputValueCode;
+
+    if(currentParkCode === inputValueCode){
+      console.log(`testing => ${inputValueCode}`)
+    }
+
+    if(inputValueCode === "recent"){
+      return <h1 className={styles["header"]}>
+                Recent National Park News
+             </h1>
+    }
+    else{
+      return <h1 className={styles["header"]}>
+                National Park News from {currentPark}
+             </h1>
+    }
+
   }
 
   const RowDisplayMapped = (displayList: Article[]) => {
@@ -74,7 +110,7 @@ export const OutputContainer: React.FC<Props> = ({newsDataByPark,
 
   return (
     <div className={styles["container"]}>
-      <h1>National Park Recent News</h1>
+          {renderHeader()}
        <div className={styles["display"]}>
           {renderDisplaySwitch(displayType.type, 
                                contentDisplay )}

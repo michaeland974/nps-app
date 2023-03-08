@@ -2,7 +2,8 @@ import {useEffect, useState, useCallback} from "react";
 import { Json, Park } from "../Containers/Main";
 import { Article } from "../Containers/Main";
 
-export const useFetch = (url: string, dependencies: []) => {
+export const useFetch = (url: string, 
+                         dependencies: [] | [string]) => {
   const [data, setData] = useState<Promise<Json>>()
   const [contentDisplay, setContentDisplay] = useState<Article[]>([])
   const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
@@ -21,7 +22,7 @@ export const useFetch = (url: string, dependencies: []) => {
     }
   }
 
-  const handleRecentNewsData = useCallback( 
+  const handleNewsData = useCallback( 
     async(obj: Promise<Json> | undefined) => {
        const data: Article[] | undefined = (await obj)?.data
        let list: Article[] = [];
@@ -38,15 +39,30 @@ export const useFetch = (url: string, dependencies: []) => {
               }
             }
          } 
-         console.log("from handle aritcle data")
+         console.log("from handle recent news data")
          setContentDisplay(list)
          return list
   }, [])
 
   const handleNewsDataByPark = useCallback(
     async(obj: Promise<Json> | undefined) => {
-
-    }, [])
+        const data: Article[] | undefined = (await obj)?.data
+        
+        if(data !== undefined){
+          try{
+            setContentDisplay(data)
+          }
+          catch(error){
+            if (error instanceof Error) {
+              return {
+                message: error.message,
+              };
+            }
+          }
+        }
+        console.log("from handle by park data")
+        return data;
+  }, [])
   
   const fetchData = async(controller: AbortController | null) => {
     const response = await fetch(url, {
@@ -64,14 +80,13 @@ export const useFetch = (url: string, dependencies: []) => {
     let controller = new AbortController()
     fetchData(controller)
 
-    return () => controller.abort()
+    //return () => controller.abort()
   }, dependencies)
   
-  return [{ data, 
+  return [{ data,
             contentDisplay, setContentDisplay, 
             parkOptions,
             handleParkOptions,
-            handleRecentNewsData, 
-            handleNewsDataByPark
+            handleNewsData, 
           }];
 } 

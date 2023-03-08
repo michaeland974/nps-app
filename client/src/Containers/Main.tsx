@@ -46,7 +46,8 @@ export const InputValueContext = createContext<InputValueContextType>(
 
 export const Main: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  const [inputValueCode, setInputValueCode] = useState('');
+  const [inputValueCode, setInputValueCode] = useState('recent');
+  //let fetchData : Promise<Json>;
 
   const [{ data, 
            parkOptions, 
@@ -56,9 +57,6 @@ export const Main: React.FC = () => {
     handleParkOptions(data)
   }, [data])
 
-  //useeffect 
-    //[] on inputvaluecode change
-
   const getParkCodeFromInput = (options: Array<Array<string>>) => {
       options.findIndex((item) => {
         const parkName = item[0];
@@ -67,7 +65,6 @@ export const Main: React.FC = () => {
       if(parkName === inputValue){
         console.log(parkCode)
         setInputValueCode(parkCode)
-        //useEffect
       }
     })
   }
@@ -81,7 +78,8 @@ export const Main: React.FC = () => {
             getParkCodeFromInput(parkOptions)
           }}/>
 
-          <OutputContainer />
+          <OutputContainer inputValueCode={inputValueCode}
+                           setInputValueCode={setInputValueCode}/>
         </div>
       
       </InputValueContext.Provider>
