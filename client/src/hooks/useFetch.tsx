@@ -25,7 +25,6 @@ export const useFetch = (url: string,
         keys.push([parkName, parkCode])
       })
       setParkOptions(keys)
-      console.log(keys)
     }
   }
 
@@ -46,7 +45,6 @@ export const useFetch = (url: string,
               }
             }
          } 
-         console.log("from handle recent news data")
          setContentDisplay(list)
          return list
   }, [])
@@ -67,30 +65,23 @@ export const useFetch = (url: string,
             }
           }
         }
-        console.log("from handle by park data")
         //return data;
   }, [])
   
-  const fetchData = async(controller: AbortController | null) => {
-    const response = await fetch(url, {
-      signal: controller?.signal
-    });
+  const fetchData = async() => {
+    const response = await fetch(url);
     const json: Promise<Json> = (await response.json())
 
     setData(json)
-    setResponse({data: json, 
-              isLoading: false})
-    controller = null
-    console.log("from fetch data")
-    //return () => {setLoading(false)}
+    setResponse({ data: json, 
+                  isLoading: false})
    // return json
   }
 
   useEffect(() => {
-    let controller = new AbortController()
-    fetchData(controller)
+    fetchData()
 
-    //return () => setLoading(false)
+    return () => setResponse({...data, isLoading: true})
   }, dependencies)
   
   return [{ response,
