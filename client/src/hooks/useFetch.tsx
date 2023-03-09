@@ -2,9 +2,16 @@ import {useEffect, useState, useCallback} from "react";
 import { Json, Park } from "../Containers/Main";
 import { Article } from "../Containers/Main";
 
+interface dataObj {
+  data?: Promise<Json>
+  isLoading: boolean
+}
+
 export const useFetch = (url: string, 
                          dependencies: [] | [string]) => {
+  const [response, setResponse] = useState<dataObj>({ isLoading: true })                          
   const [data, setData] = useState<Promise<Json>>()
+  //const [isLoading, setLoading] = useState(false);
   const [contentDisplay, setContentDisplay] = useState<Article[]>([])
   const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
 
@@ -61,7 +68,7 @@ export const useFetch = (url: string,
           }
         }
         console.log("from handle by park data")
-        return data;
+        //return data;
   }, [])
   
   const fetchData = async(controller: AbortController | null) => {
@@ -71,19 +78,22 @@ export const useFetch = (url: string,
     const json: Promise<Json> = (await response.json())
 
     setData(json)
+    setResponse({data: json, 
+              isLoading: false})
     controller = null
     console.log("from fetch data")
-    return json
+    //return () => {setLoading(false)}
+   // return json
   }
 
   useEffect(() => {
     let controller = new AbortController()
     fetchData(controller)
 
-    //return () => controller.abort()
+    //return () => setLoading(false)
   }, dependencies)
   
-  return [{ data,
+  return [{ response,
             contentDisplay, setContentDisplay, 
             parkOptions,
             handleParkOptions,

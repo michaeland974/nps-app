@@ -12,6 +12,7 @@ type Props = {
  // setNewsDataByPark?: React.Dispatch<React.SetStateAction<[]>>
  inputValueCode: string,
  setInputValueCode?: React.Dispatch<React.SetStateAction<string>>
+ currentPark?: string
 }
 
 type DisplayType = {
@@ -19,22 +20,30 @@ type DisplayType = {
 }
                                                 //set display
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
-                                                  setInputValueCode}) => {
+                                                  setInputValueCode, 
+                                                  currentPark}) => {
   const [cardProps, setCardProps] = useState<Article>({});                                                 
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
   const [endpoint, setEndpoint] = useState("recent")  
-  const {inputValue, setInputValue} = useContext(InputValueContext)                                             
-
-  const [{ data,
-           contentDisplay, 
-           handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) //on fetchUrl
+  const {inputValue, setInputValue} = useContext(InputValueContext)
+  
+  const [{ response,
+          contentDisplay, 
+          handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
+    
+  // useEffect(() => {
+  //   renderHeader()
+  // }, [contentDisplay])
 
   useEffect(() => {
     //fetchData
-    console.log(endpoint)
-    handleNewsData(data)
-  }, [data])
-
+    console.log(response.isLoading)
+    console.log(`testing endpoint => ${endpoint}`)
+    handleNewsData(response.data)
+    
+    //return (() => {se(false)})
+  }, [response])
+  
   useEffect(() => {
     setEndpoint(inputValueCode)
     //console.log(fetchUrl)
@@ -59,41 +68,34 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   }
 
   const renderHeader = () => {
-    /* The Park name in the header will persist if the user
-       changes input without submitting
-     */ 
-    const currentPark = inputValue;
-    const currentParkCode = inputValueCode;
-
-    if(currentParkCode === inputValueCode){
-      console.log(`testing => ${inputValueCode}`)
-    }
-
-    if(inputValueCode === "recent"){
-      return <h1 className={styles["header"]}>
-                Recent National Park News
-             </h1>
+    let text = "";
+    
+    if(currentPark === ""){
+      text = "Recent National Park News"
     }
     else{
-      return <h1 className={styles["header"]}>
-                National Park News from {currentPark}
-             </h1>
+      text = `National Park News from ${currentPark}`
     }
 
+    return <h1 className={styles["header"]}>
+                {response.isLoading ? "isLoading..." : text}
+            </h1>
   }
 
   const RowDisplayMapped = (displayList: Article[]) => {
-    const isEmpty = (displayList.length === 0)                         
+    const isEmpty = (displayList.length === 0)   
+    //CHECK                      
     const rowMap = displayList.map((article, i) => {
       return (
         <RowDisplay key={i}
                     onClick={() => handleRowClick(article)}
-                    parkName={article.relatedParks![0].fullName}
+                    //parkName={article.relatedParks![0].fullName}
+                    parkName={currentPark}
                     title={article.title}/> )
     })
     return (
       <div>
-        {isEmpty ? "Loading" : rowMap}
+        {response.isLoading ? "isLoading..." : rowMap}
       </div>
     )
   }
@@ -110,7 +112,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 
   return (
     <div className={styles["container"]}>
-          {renderHeader()}
+      {renderHeader()}
        <div className={styles["display"]}>
           {renderDisplaySwitch(displayType.type, 
                                contentDisplay )}

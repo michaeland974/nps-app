@@ -47,15 +47,15 @@ export const InputValueContext = createContext<InputValueContextType>(
 export const Main: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [inputValueCode, setInputValueCode] = useState('recent');
-  //let fetchData : Promise<Json>;
+  const [currentPark, setCurrentPark] = useState('')
 
-  const [{ data, 
+  const [{ response, 
            parkOptions, 
            handleParkOptions }] = useFetch("/api", [])
 
   useEffect(() => {
-    handleParkOptions(data)
-  }, [data])
+    handleParkOptions(response.data)
+  }, [response])
 
   const getParkCodeFromInput = (options: Array<Array<string>>) => {
       options.findIndex((item) => {
@@ -63,8 +63,10 @@ export const Main: React.FC = () => {
         const parkCode = item[1]
       
       if(parkName === inputValue){
-        console.log(parkCode)
+        console.log(`test park code => ${parkCode}`)
+        console.log(`test park name => ${parkName}`)
         setInputValueCode(parkCode)
+        setCurrentPark(parkName)
       }
     })
   }
@@ -79,7 +81,8 @@ export const Main: React.FC = () => {
           }}/>
 
           <OutputContainer inputValueCode={inputValueCode}
-                           setInputValueCode={setInputValueCode}/>
+                           setInputValueCode={setInputValueCode}
+                           currentPark={currentPark} />
         </div>
       
       </InputValueContext.Provider>
