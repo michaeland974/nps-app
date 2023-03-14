@@ -1,3 +1,8 @@
 .card{
   border: 2px solid magenta;
 }
+
+img{
+  height: 70px;
+  width: 70px;
+}

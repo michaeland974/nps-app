@@ -16,12 +16,12 @@ type Props = {
  currentPark?: string
 }
 
-type DisplayType = {
+export interface DisplayType {
   type: 'rows' | 'card'
 }
 
-//json response from API does not include park name property
-const getParkNameFromCode = (options: Array<Array<string>>, 
+// json response from API does not include park name property
+const getParkNameFromCode = ( options: Array<Array<string>>, 
                               parkCode: string | undefined): string => {
   const keys = options.find((item) => {
     const optionsParkName = item[0];
@@ -69,7 +69,8 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     const props = { parkName: parkName,
                     title: obj.title,
                     releaseDate: obj.releaseDate,
-                    desc: obj.desc,
+                    abstract: obj.abstract,
+                    url: obj.url,
                     image: { 
                       url: obj.image?.url,
                       caption: obj.image?.caption,
@@ -82,8 +83,6 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     passProps(obj, parkName)
     setDisplayType({type: 'card'})
   }
-
-  
 
   const renderHeader = () => {
     const text = (currentPark === "" ? `Recent National Park News` : 
@@ -99,13 +98,17 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     //CHECK                      
     const rowMap = displayList.map((article, i) => {
       const parkName = getParkNameFromCode(parkOptions, article.parkCode)
-
+      
       return (
         <RowDisplay key={i}
                     onClick={() => handleRowClick(article, parkName)}
                     parkName={parkName}
                     releaseDate={renderDate(article.releaseDate)}
-                    title={article.title}/> )
+                    title={article.title}
+                    url={article.url}
+                    image={article.image}
+                    abstract={article.abstract}
+      />)
     })
     return (
       <div className={styles["news-display"]}>
@@ -120,7 +123,8 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
         return RowDisplayMapped(displayList)
       case 'card':
         return (<Card onClick={() => { setDisplayType({type: 'rows'})} }
-                              {...cardProps} />)
+                      type={displayType.type}
+                           {...cardProps} />)
     }
   }
 

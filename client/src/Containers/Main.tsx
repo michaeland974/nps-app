@@ -22,9 +22,10 @@ export interface Json extends Object{
 export interface Article{
   parkName?: string,
   title?: string,
+  url?: string,
   parkCode?: string,
   releaseDate?: string //or date
-  desc?: string,
+  abstract?: string,
   image?: {
     url?: string,
     caption?: string,
