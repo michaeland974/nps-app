@@ -46,7 +46,7 @@ export const renderDate = (releaseDate: string | undefined): string => {
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
                                                   setInputValueCode, 
                                                   currentPark}) => {
-  
+  //SCROLL POSITION
   const [endpoint, setEndpoint] = useState("recent")  
   const [{ response,
            contentDisplay, 

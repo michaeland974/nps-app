@@ -7,7 +7,7 @@ import { DisplayType } from '../Containers/OutputContainer'
 
 interface Props extends Article, DisplayType{
   onClick?: (React.MouseEventHandler<HTMLButtonElement>)
- }
+}
 
 //Fix BACK button
 const Placeholder = () => {
@@ -25,7 +25,6 @@ export const Card: React.FC<Props> = ({...props}) => {
     if(props.image?.url !== ''){
       setImageAvailability(true)
     } else{
-      console.log("error")
       setImageAvailability(false)
     }
   }, [props.type])
