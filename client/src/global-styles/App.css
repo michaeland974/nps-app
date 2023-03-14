@@ -6,11 +6,16 @@
 #root, html{
   font-family: CreteRound;
 
-  --background: #D5BF86;
+  --background: #D5BF86; 
   --highlight:#C84630;
-  --main:#31572C;
-  --secondary:#6C809A;
-  /*            #8FA9CC */
+  --highlight2: #281575;
+  --first2: #4C914D;
+  --first: #8e4b14;
+  --second: #1d451e; 
+  --dark: #474742;
+  --dark2: #282242;
+  --contrast: #7D3714;
+  
   background-color: var(--background);
   
   height:100%; 
@@ -18,7 +23,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   gap: 1rem
 }
 

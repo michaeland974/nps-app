@@ -10,9 +10,8 @@ export const RowDisplay: React.FC<Props> = ({parkName, title, releaseDate, onCli
   return(
     <div className={styles["row"]}
          onClick={onClick}>
-      RowDisplay
-      <div>Park Name: {parkName}</div>
       <div>Title: {title}</div>
+      <div>Park Name: {parkName}</div>
       <div>Date: {releaseDate}</div>
     </div>
   )

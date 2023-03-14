@@ -1,12 +1,14 @@
 import * as React from 'react';
+import styles from './styles/OutputContainer.module.css'
+import { OptionsContext } from './../Containers/Main';
+//Hooks
 import { useState, useEffect, useContext } from 'react';
-import { InputValueContext } from './Main';
 import { useFetch } from '../hooks/useFetch';
-import { Json, Article } from './Main';
+//Components
+import { Article } from './Main';
 import { RowDisplay } from '../Components/RowDisplay';
 import { Card } from '../Components/Card';
 import { Loading } from '../Components/Loading';
-import styles from './styles/OutputContainer.module.css'
 
 type Props = {
  inputValueCode: string,
@@ -17,6 +19,21 @@ type Props = {
 type DisplayType = {
   type: 'rows' | 'card'
 }
+
+//json response from API does not include park name property
+const getParkNameFromCode = (options: Array<Array<string>>, 
+                              parkCode: string | undefined): string => {
+  const keys = options.find((item) => {
+    const optionsParkName = item[0];
+    const optionsParkCode = item[1].toLowerCase();
+  
+    if(optionsParkCode === parkCode){
+      return optionsParkName;
+    }
+  })
+  return keys && parkCode ? keys[0] : ''
+}
+
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
                                                   setInputValueCode, 
                                                   currentPark}) => {
@@ -28,7 +45,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   
   const [cardProps, setCardProps] = useState<Article>({});                                                 
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
-  //const {inputValue, setInputValue} = useContext(InputValueContext)
+  const {parkOptions} = useContext(OptionsContext)
     
   useEffect(() => {
     handleNewsData(response.data)
@@ -37,9 +54,10 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   useEffect(() => {
     setEndpoint(inputValueCode)
   }, [inputValueCode])
- 
+
+ //change parkName
   const passProps = (obj: Article) => {
-    const props = { parkName: obj.relatedParks![0].fullName,
+    const props = { parkName: obj.parkName,
                     title: obj.title,
                     releaseDate: obj.releaseDate,
                     desc: obj.desc,
@@ -61,7 +79,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
                                        `National Park News from ${currentPark}`)
 
     return <h1 className={styles["header"]}>
-                {response.isLoading ? "no loading rc" : <Loading />}
+                {response.isLoading ? "" : text}
             </h1>
   }
 
@@ -69,16 +87,20 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     const isEmpty = (displayList.length === 0)   
     //CHECK                      
     const rowMap = displayList.map((article, i) => {
+      //const parkName
+
       return (
         <RowDisplay key={i}
                     onClick={() => handleRowClick(article)}
-                    //parkName={article.relatedParks![0].fullName}
-                    parkName={currentPark}
+                    //parkName = {article.parkCode}
+                    //parkName={currentPark}
+                    parkName={getParkNameFromCode(parkOptions, 
+                                                  article.parkCode)}
                     title={article.title}/> )
     })
     return (
-      <div>
-        {response.isLoading ? "switch" : rowMap}
+      <div className={styles["news-display"]}>
+        {response.isLoading ? <Loading /> : rowMap}
       </div>
     )
   }
@@ -96,10 +118,10 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   return (
     <div className={styles["container"]}>
       {renderHeader()}
-       <div className={styles["display"]}>
-          {renderDisplaySwitch(displayType.type, 
-                               contentDisplay)}
-       </div>
+      <>
+        {renderDisplaySwitch(displayType.type, 
+                             contentDisplay)}
+      </>
     </div>
     )
 }

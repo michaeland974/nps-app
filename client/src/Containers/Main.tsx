@@ -1,9 +1,11 @@
 import * as React from 'react';
+import styles from './styles/Main.module.css'
+//Hooks
 import { useState, useEffect, createContext } from 'react';
 import { useFetch } from '../hooks/useFetch';
+//Containers
 import { InputContainer } from "./InputContainer";
 import { OutputContainer } from "./OutputContainer";
-import styles from './styles/Main.module.css'
 
 export interface Park {
   parkCode?: string,
@@ -20,6 +22,7 @@ export interface Json extends Object{
 export interface Article{
   parkName?: string,
   title?: string,
+  parkCode?: string,
   releaseDate?: string //or date
   desc?: string,
   image?: {
@@ -31,7 +34,7 @@ export interface Article{
 } 
 
 type OptionsContextType = {
-  parkOptions?: string[][] | []
+  parkOptions: string[][] | []
 }
 
 type InputValueContextType = {

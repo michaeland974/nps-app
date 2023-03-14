@@ -1,9 +1,9 @@
 .container{
-  border: 2px solid darkorange;
-  display: flex;
-  flex-direction: column;
-  margin: 2rem;
-
   height: 80vh;
   width: 80vw;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: 2rem;
 }
