@@ -1,4 +1,8 @@
 .page-header{
+  width: 100%;
+  overflow-wrap: anywhere;
+  display: inline;
+  text-overflow:inherit;
   text-align: center;
   margin: 1.5rem;
   font-weight: bold;

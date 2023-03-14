@@ -39,7 +39,8 @@ export const Card: React.FC<Props> = ({...props}) => {
                                    <Placeholder />}
         <p>Abstract: {props.abstract}</p>
         <a href={props.url} 
-          target="_blank">Link Click</a>
+           target="_blank" 
+           rel="noreferrer">Link Click</a>
         <span>Date: {renderDate(props.releaseDate)}</span>
     </div>
   )

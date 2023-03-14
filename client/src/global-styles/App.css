@@ -4,30 +4,25 @@
 }
 
 #root, html{
-  font-family: CreteRound;
-
   --background: #D5BF86; 
   --highlight:#C84630;
   --highlight2: #281575;
-  --first2: #4C914D;
-  --first: #8e4b14;
-  --second: #1d451e; 
-  --dark: #474742;
-  --dark2: #282242;
+  --first: #4C914D;
+  --secondary: #1d451e; 
+  --grey: #474742;
+  --dark: #282242;
   --contrast: #7D3714;
-  
+
+  height:100%;
+  font-family: CreteRound;
+  font-size: 1rem;
   background-color: var(--background);
-  
-  height:100%; 
-  display:flex;  
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.25rem;
-  gap: 1rem
 }
 
-/* #logo{
-  width: 50px;
-  height: 50px;
-} */
+.App{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}

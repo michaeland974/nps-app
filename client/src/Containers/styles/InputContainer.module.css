@@ -1,4 +1,4 @@
 .container{
-  background-color: var(--first2);
-  flex: 3;
+  background-color: var(--first);
+  width: 100%;
 }
