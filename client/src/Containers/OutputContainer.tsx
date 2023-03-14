@@ -34,6 +34,15 @@ const getParkNameFromCode = (options: Array<Array<string>>,
   return keys && parkCode ? keys[0] : ''
 }
 
+export const renderDate = (releaseDate: string | undefined): string => {
+    if(!releaseDate){
+      return ''
+    }
+    const date = new Date(releaseDate).toLocaleString('en-us',{dateStyle: 'full'})
+    const parsedDate = date.substring(date.indexOf(' ') + 1)
+    return parsedDate
+}
+
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
                                                   setInputValueCode, 
                                                   currentPark}) => {
@@ -56,8 +65,8 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   }, [inputValueCode])
 
  //change parkName
-  const passProps = (obj: Article) => {
-    const props = { parkName: obj.parkName,
+  const passProps = (obj: Article, parkName: string) => {
+    const props = { parkName: parkName,
                     title: obj.title,
                     releaseDate: obj.releaseDate,
                     desc: obj.desc,
@@ -69,10 +78,12 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     setCardProps(props);
   }
 
-  const handleRowClick = (obj: Article) => {
-    passProps(obj)
+  const handleRowClick = (obj: Article, parkName: string) => {
+    passProps(obj, parkName)
     setDisplayType({type: 'card'})
   }
+
+  
 
   const renderHeader = () => {
     const text = (currentPark === "" ? `Recent National Park News` : 
@@ -87,15 +98,13 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     const isEmpty = (displayList.length === 0)   
     //CHECK                      
     const rowMap = displayList.map((article, i) => {
-      //const parkName
+      const parkName = getParkNameFromCode(parkOptions, article.parkCode)
 
       return (
         <RowDisplay key={i}
-                    onClick={() => handleRowClick(article)}
-                    //parkName = {article.parkCode}
-                    //parkName={currentPark}
-                    parkName={getParkNameFromCode(parkOptions, 
-                                                  article.parkCode)}
+                    onClick={() => handleRowClick(article, parkName)}
+                    parkName={parkName}
+                    releaseDate={renderDate(article.releaseDate)}
                     title={article.title}/> )
     })
     return (
