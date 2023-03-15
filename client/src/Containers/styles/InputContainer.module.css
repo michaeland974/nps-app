@@ -1,4 +1,5 @@
 .container{
   background-color: var(--first);
-  width: 100%;
+  /* width: 100%; */
+  flex: 2;
 }

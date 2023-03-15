@@ -1,9 +1,19 @@
 .page-header{
   width: 100%;
-  overflow-wrap: anywhere;
+  /* overflow-wrap: anywhere;
   display: inline;
-  text-overflow:inherit;
-  text-align: center;
+  text-overflow:inherit; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* text-align: center; */
+
   margin: 1.5rem;
   font-weight: bold;
 }
+
+.icon{
+  height: 3rem;
+  width: 3rem;
+}
+

@@ -1,7 +1,9 @@
 import express from 'express'
+import cors from 'cors'
 import {getParkData, getParkCodes, apiReq} from './scripts/actions.js'
 
 const app = express();
+app.use(cors())
 app.set("json spaces", 4)
 
 const endpoints = async() => {

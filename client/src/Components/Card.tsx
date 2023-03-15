@@ -11,11 +11,13 @@ interface Props extends Article, DisplayType{
 
 //Fix BACK button
 const Placeholder = () => {
-  return <img src="/images/noun-bear.png" alt="placeholder bear"></img>
+  return <img src="/images/noun-hiking.png" alt="placeholder hikers"></img>
 }
 
 const Image = ({...props}) => {
-  return <img src={props.url} alt="test"></img>
+   return <img crossOrigin="anonymous"
+               src={props.url} 
+               alt="display image for news release" ></img>
 }
 
 export const Card: React.FC<Props> = ({...props}) => {
@@ -36,11 +38,11 @@ export const Card: React.FC<Props> = ({...props}) => {
         <h1>Park Name: {props.parkName}</h1>
         <h2>Title: {props.title}</h2>
         {isImageAvailable ? <Image url={props.image?.url}/> : 
-                                   <Placeholder />}
+                            <Placeholder />}
         <p>Abstract: {props.abstract}</p>
         <a href={props.url} 
-           target="_blank" 
-           rel="noreferrer">Link Click</a>
+           target="_blank"
+           rel="noreferrer">Visit</a>
         <span>Date: {renderDate(props.releaseDate)}</span>
     </div>
   )

@@ -6,13 +6,19 @@ interface Props extends Article {
   onClick?: (React.MouseEventHandler<HTMLDivElement>)
 }
 
+//conditional on input of park
+//dont need title and 
 export const RowDisplay: React.FC<Props> = ({parkName, title, releaseDate, onClick}) => {
   return(
     <div className={styles["row"]}
          onClick={onClick}>
-      <div>Title: {title}</div>
-      <div>Park Name: {parkName}</div>
-      <div>Date: {releaseDate}</div>
+      
+      <h1 className={styles["park-name"]}>{parkName}</h1>
+      <div className={styles["content"]}>
+        <span className={styles["title"]}>{title}</span>
+        <span className={styles["date"]}>{releaseDate}</span>
+      </div>
+    
     </div>
   )
 }
