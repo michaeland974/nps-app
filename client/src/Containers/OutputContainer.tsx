@@ -27,7 +27,10 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
     const optionsParkName = item[0];
     const optionsParkCode = item[1].toLowerCase();
   
-    if(optionsParkCode === parkCode){
+    /** substring necessary for edge case when
+     *  json returns multiple park codes for single park 
+     */
+    if(optionsParkCode === parkCode?.substring(0,4)){
       return optionsParkName;
     }
   })
@@ -85,12 +88,12 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   }
 
   const renderHeader = () => {
-    const text = (currentPark === "" ? `Recent National Park News` : 
-                                       `National Park News from ${currentPark}`)
+    const text = (currentPark === "" ? `RECENT NATIONAL PARK NEWS` : 
+                                       `${currentPark} RELATED NEWS`)
 
     return <h1 className={styles["header"]}>
-                {response.isLoading ? "" : text}
-            </h1>
+                {response.isLoading ? "" : <span>{text}</span>}
+           </h1>
   }
 
   const RowDisplayMapped = (displayList: Article[]) => {
@@ -98,11 +101,13 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     //CHECK                      
     const rowMap = displayList.map((article, i) => {
       const parkName = getParkNameFromCode(parkOptions, article.parkCode)
-      
+
       return (
         <RowDisplay key={i}
+                    tabIndex={2+i}
                     onClick={() => handleRowClick(article, parkName)}
                     parkName={parkName}
+                    //parkName={currentPark}
                     releaseDate={renderDate(article.releaseDate)}
                     title={article.title}
                     url={article.url}

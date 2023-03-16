@@ -73,7 +73,8 @@ export const InputBar: React.FC = () => {
                type="text" 
                placeholder="Look for"
                value={inputValue} 
-               onChange={handleInput}/>
+               onChange={handleInput}
+               tabIndex={1}/>
 
         <div className={styles["arrow-container"]}>
           <button className={styles["arrow"]}></button>

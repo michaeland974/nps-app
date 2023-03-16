@@ -15,6 +15,7 @@ export const InputContainer: React.FC<Props> = ({onSubmit}) => {
       Input Container
       <InputBar />
       <button className="submit"
+              tabIndex={2}
               onClick={onSubmit}>Submit</button>
     </div>
   )
