@@ -1,25 +1,31 @@
 @font-face {
-  font-family: CreteRound;
-  src: url('./CreteRound-Regular.ttf');
+  font-family: PTSans;
+  src: url('./PTSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: PTBold;
+  src: url('./PTSans-Bold.ttf');
 }
 
 #root, html{
-  --background: #D5BF86; 
-  --highlight:#C84630;
-  --highlight2: #281575;
-  --first: #4C914D;
-  --secondary: #1d451e; 
-  --grey: #474742;
-  --dark: #282242;
-  --contrast: #7D3714;
+  overflow: -moz-scrollbars-none;
+
+  --background: #DEC19B; 
+  --first: #788C5E;
+  --secondary: #37402B;
+  --contrast: #f0e5d3;
+  --highlight: #8C5063;
 
   height:100%;
-  font-family: CreteRound;
+  font-family: PTSans;
   font-size: 1rem;
   background-color: var(--background);
 }
 
 .App{
+  scrollbar-width: none; /* For Firefox */
+
   height: 100%;
   width: 100%;
   display: flex;

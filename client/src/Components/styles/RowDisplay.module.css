@@ -2,8 +2,9 @@
   --arrow-transform: rotate(315deg) translateY(5px);
 
   background: rgba(51, 170, 51, .2);
-  border-radius: 10px;
-  padding: 0.75rem;
+  /* border-radius: 10px; */
+  /* padding: 0.75rem; */
+  padding: 0.75rem 0 0.75rem 0;
   box-shadow: 1.2px 2.4px 2.4px hsl(0deg 0% 0% / 0.46);
   cursor: pointer;
 
@@ -29,8 +30,13 @@
 .park-name{
   margin: -0.75rem;
   padding: 0.75rem;
-  border-radius: 10px 10px 0 0;
-  background-color: var(--contrast);
+  /* border-radius: 10px 10px 0 0; */
+  border-bottom: 6px solid var(--highlight);
+  /* background-color: var(--contrast); */
+  color: black;
+  font-family: PTBold;
+
+  background: var(--contrast);
 }
 
 .footer{

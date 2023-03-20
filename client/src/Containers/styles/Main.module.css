@@ -1,4 +1,5 @@
 .container{
+  /* change for mobile*/
   width: 80%;
   height: 85vh;
   display: flex;

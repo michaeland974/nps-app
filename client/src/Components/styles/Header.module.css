@@ -1,5 +1,6 @@
 .page-header{
   width: 100%;
+  font-family: PTBold;
   /* overflow-wrap: anywhere;
   display: inline;
   text-overflow:inherit; */
@@ -7,9 +8,10 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  /* text-align: center; */
+  text-align: center;
 
-  margin: 1.5rem;
+  /* margin: 1.5rem; */
+  padding: 1rem;
   font-weight: bold;
 }
 

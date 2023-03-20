@@ -62,7 +62,7 @@ export const InputBar: React.FC = () => {
           </li> )
     })
   }
-
+//! ON CHANGE
   return(
     <div className={styles["container"]}
          onBlur={() => setOpen(false)}>

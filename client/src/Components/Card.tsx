@@ -33,17 +33,24 @@ export const Card: React.FC<Props> = ({...props}) => {
   
   return(
     <div className={styles["card"]}>
-      <button id={styles["back"]}
-              onClick={props.onClick}> Back </button>
-        <h1>Park Name: {props.parkName}</h1>
-        <h2>Title: {props.title}</h2>
+      
+        {//<h1>Park Name: {props.parkName}</h1>
+        }
         {isImageAvailable ? <Image url={props.image?.url}/> : 
                             <Placeholder />}
+
+        <span>Date: {renderDate(props.releaseDate)}</span>            
+        <h1 className={styles["title"]}>Title: {props.title}</h1>
         <p>Abstract: {props.abstract}</p>
-        <a href={props.url} 
-           target="_blank"
-           rel="noreferrer">Visit</a>
-        <span>Date: {renderDate(props.releaseDate)}</span>
+        
+        <div className={styles["footer"]}>
+          <button id={styles["previous"]}
+                  onClick={props.onClick}></button>  
+          <a id={styles["visit"]}
+             href={props.url} 
+             target="_blank"
+             rel="noreferrer">Visit</a>
+        </div>
     </div>
   )
 }

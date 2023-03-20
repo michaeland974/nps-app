@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './styles/OutputContainer.module.css'
 import { OptionsContext } from './../Containers/Main';
 //Hooks
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useFetch } from '../hooks/useFetch';
 //Components
 import { Article } from './Main';
@@ -49,7 +49,8 @@ export const renderDate = (releaseDate: string | undefined): string => {
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
                                                   setInputValueCode, 
                                                   currentPark}) => {
-  //SCROLL POSITION
+  const [scrollPos, setScrollPos] = useState(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [endpoint, setEndpoint] = useState("recent")  
   const [{ response,
            contentDisplay, 
@@ -66,6 +67,21 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   useEffect(() => {
     setEndpoint(inputValueCode)
   }, [inputValueCode])
+
+  useEffect(() => {
+    if(displayType.type === 'rows'){
+      scrollRef.current?.scrollTo(0, scrollPos)
+    }
+    if(displayType.type === 'card'){
+      scrollRef.current?.scrollTo(0, 0)
+    }
+  }, [displayType])
+
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+    if(displayType.type === 'rows'){
+      setScrollPos(e.currentTarget.scrollTop);
+    }
+  }
 
  //change parkName
   const passProps = (obj: Article, parkName: string) => {
@@ -90,9 +106,9 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   const renderHeader = () => {
     const text = (currentPark === "" ? `RECENT NATIONAL PARK NEWS` : 
                                        `${currentPark} RELATED NEWS`)
-
+    //setTimeout
     return <h1 className={styles["header"]}>
-                {response.isLoading ? "" : <span>{text}</span>}
+                {response.isLoading ? <Loading /> : <span>{text}</span>}
            </h1>
   }
 
@@ -104,7 +120,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 
       return (
         <RowDisplay key={i}
-                    tabIndex={2+i}
+                    tabIndex={i+2}
                     onClick={() => handleRowClick(article, parkName)}
                     parkName={parkName}
                     //parkName={currentPark}
@@ -127,14 +143,16 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
       case 'rows':
         return RowDisplayMapped(displayList)
       case 'card':
-        return (<Card onClick={() => { setDisplayType({type: 'rows'})} }
+        return (<Card onClick={() => {setDisplayType({type: 'rows'})}}
                       type={displayType.type}
                            {...cardProps} />)
     }
   }
 
   return (
-    <div className={styles["container"]}>
+    <div className={styles["container"]}
+         ref={scrollRef}
+         onScroll={handleScroll}>
       {renderHeader()}
       <>
         {renderDisplaySwitch(displayType.type, 

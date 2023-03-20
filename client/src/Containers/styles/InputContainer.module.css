@@ -2,4 +2,5 @@
   background-color: var(--first);
   /* width: 100%; */
   flex: 2;
+  padding: 1rem;
 }
