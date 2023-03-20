@@ -6,12 +6,14 @@
 @font-face {
   font-family: PTBold;
   src: url('./PTSans-Bold.ttf');
+  font-weight: 500;
 }
 
 #root, html{
-  overflow: -moz-scrollbars-none;
-
-  --background: #DEC19B; 
+  --background: #e3b374;
+  --background-with-shade: #bb9059ac; 
+  /* --background: #e9bb7f; */
+  /* --background-with-tint: rgba(222, 193, 155); */
   --first: #788C5E;
   --secondary: #37402B;
   --contrast: #f0e5d3;
@@ -24,8 +26,6 @@
 }
 
 .App{
-  scrollbar-width: none; /* For Firefox */
-
   height: 100%;
   width: 100%;
   display: flex;

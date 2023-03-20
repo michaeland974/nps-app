@@ -15,7 +15,9 @@ export const RowDisplay: React.FC<Props> = ({parkName, title, releaseDate, onCli
          onClick={onClick}
          tabIndex={tabIndex}>
       
-      <h1 className={styles["park-name"]}>{parkName}</h1>
+      <h1 className={styles["park-name"]}>
+        {parkName}
+      </h1>
       <div className={styles["content"]}>
         <span className={styles["title"]}>{title}</span>
         <div className={styles["footer"]}>

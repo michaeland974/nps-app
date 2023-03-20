@@ -1,5 +1,5 @@
 import * as React from "react"
-import {MouseEvent, useContext, useState} from "react";
+import {MouseEvent, useContext, useState, useRef} from "react";
 import { OptionsContext, InputValueContext } from './../Containers/Main';
 import styles from './styles/InputBar.module.css'
 
@@ -7,8 +7,10 @@ export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
   const {parkOptions} = useContext(OptionsContext)
   const {inputValue, setInputValue} = useContext(InputValueContext)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   const onInputBarClick = (e: MouseEvent) => {
+    // e.preventDefault()
     setOpen(prevValue => !prevValue)
   }
 
@@ -21,15 +23,16 @@ export const InputBar: React.FC = () => {
   }
 
   const onOptionSelect = (option:string) => {
-   // props.onChange !== undefined && props.onChange(option)
    setInputValue(option)
    setOpen(false);
   }
 
   const clearInput = (e: MouseEvent) => {
-    e.stopPropagation()
-    setInputValue("");
-    setOpen(true) //Possibly change for better UX
+      e.stopPropagation()
+      setInputValue("");
+      setOpen(true)
+      //input ref necessary to prevent onblue bug
+      inputRef.current?.focus();
   }
 
   const toggleClass = (toggleCondition: boolean,
@@ -55,8 +58,8 @@ export const InputBar: React.FC = () => {
           <li key={i}
                className={styles["option"]}
              //onMouseDown prevents onBlur error
-               onMouseDown={(e) => {
-                  e.preventDefault()
+               onMouseDown={(e) => {                    
+                //  e.preventDefault()
                   onOptionSelect(parkName) }} >   
             {parkName}
           </li> )
@@ -65,12 +68,19 @@ export const InputBar: React.FC = () => {
 //! ON CHANGE
   return(
     <div className={styles["container"]}
-         onBlur={() => setOpen(false)}>
+         onBlur={(e) => {
+         if(!e.relatedTarget){
+
+           setOpen(false)
+         }
+         }}
+         >
       <div className={styles["bar-container"]}
            onClick={onInputBarClick}>
         
         <input className={styles["bar"]} 
                type="text" 
+               ref={inputRef}
                placeholder="Look for"
                value={inputValue} 
                onChange={handleInput}
@@ -80,9 +90,10 @@ export const InputBar: React.FC = () => {
           <button className={styles["arrow"]}></button>
         </div> 
 
-        <button className={toggleClass((inputValue===''), "clear-button", "hide")}
+      {//<button> will cause bug with e.stopPropagation()
+      }<span className={toggleClass((inputValue===''), "clear-button", "hide")}
                 onClick={clearInput}> x 
-        </button>
+        </span>
       </div>
 
       <ul className={toggleClass((!isOpen), "dropdown", "hide")}>

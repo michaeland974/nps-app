@@ -10,11 +10,11 @@ const Icon = () => {
 
 export const Header = () => {
   return (
-    <header className={styles['page-header']}>
-      <h1>
-        National Park Service News Releases
-      </h1>
-      <Icon />
+    <header>
+      <span className={styles['page-header']}>
+         <span>National Park Service News Releases</span>
+         <Icon />
+      </span>
     </header>
   )
 }
