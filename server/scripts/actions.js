@@ -30,7 +30,3 @@ export const apiReq = async (url) => {
   })
   return response.data
 }
-
-// const {startDate, endDate} = { startDate: "2022-07-26", 
-//                                endDate: "2022-07-27" }
-// const dateQ = `Date_Released:[${startDate}T00:00:00Z TO ${endDate}T00:00:00Z]`
