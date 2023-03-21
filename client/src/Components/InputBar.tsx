@@ -3,6 +3,15 @@ import {MouseEvent, useContext, useState, useRef} from "react";
 import { OptionsContext, InputValueContext } from './../Containers/Main';
 import styles from './styles/InputBar.module.css'
 
+/** handling park names that are too lengthy
+ *  for input bar on mobile screen */
+const overflowName = (name: string) => {
+  let isShort = (name.length < 24);
+  const overflowName = (name.substring(0, 24))+"..."
+
+  return (isShort ? name : overflowName)
+}
+
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
   const {parkOptions} = useContext(OptionsContext)
@@ -31,7 +40,7 @@ export const InputBar: React.FC = () => {
       e.stopPropagation()
       setInputValue("");
       setOpen(true)
-      //input ref necessary to prevent onblue bug
+      //input ref necessary to prevent onblur bug
       inputRef.current?.focus();
   }
 
@@ -54,6 +63,7 @@ export const InputBar: React.FC = () => {
     
     return filterOnChange?.map((options: string[], i: number) => {
         const parkName = options[0]
+      
         return (
           <li key={i}
                className={styles["option"]}
@@ -81,8 +91,9 @@ export const InputBar: React.FC = () => {
         <input className={styles["bar"]} 
                type="text" 
                ref={inputRef}
-               placeholder="Look for"
-               value={inputValue} 
+               placeholder="Search for park"
+              //  value={inputValue} 
+               value={overflowName(inputValue)}
                onChange={handleInput}
                tabIndex={1}/>
 
@@ -93,7 +104,7 @@ export const InputBar: React.FC = () => {
       {//<button> will cause bug with e.stopPropagation()
       }<span className={toggleClass((inputValue===''), "clear-button", "hide")}
                 onClick={clearInput}> x 
-        </span>
+       </span>
       </div>
 
       <ul className={toggleClass((!isOpen), "dropdown", "hide")}>

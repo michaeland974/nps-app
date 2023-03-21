@@ -1,13 +1,15 @@
 .page-header{
-  font-family: PTBold;
-  font-weight: bold;
+  font-family: PTSans;
+  /* font-weight: bold; */
   border-radius: 10px;
+  font-size: 1.5rem;
   
   width: 100%;
   text-align: center;
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   margin: auto;
   margin: 1rem 0 1rem 0rem;
+  text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.189);
   
   display: flex;
   align-items: center;

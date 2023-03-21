@@ -104,7 +104,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   }
 
   const renderHeader = () => {
-    const text = (currentPark === "" ? `RECENT NATIONAL PARK NEWS` : 
+    const text = (currentPark === "" ? `RECENT NEWS` : 
                                        `${currentPark} RELATED NEWS`)
     //setTimeout
     return <h1 className={styles["header"]}>

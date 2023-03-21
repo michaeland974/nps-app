@@ -12,7 +12,9 @@ export const Header = () => {
   return (
     <header>
       <span className={styles['page-header']}>
-         <span>National Park Service News Releases</span>
+         <span>
+            National Park Service News
+          </span>
          <Icon />
       </span>
     </header>
