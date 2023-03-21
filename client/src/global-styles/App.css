@@ -9,6 +9,11 @@
   font-weight: 500;
 }
 
+@font-face {
+  font-family: PottaOne;
+  src: url('./PottaOne-Regular.ttf');
+}
+
 #root, html{
   --background: #e3b374;
   --background-with-shade: #bb9059ac; 

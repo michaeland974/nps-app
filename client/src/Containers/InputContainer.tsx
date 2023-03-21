@@ -12,10 +12,10 @@ export const InputContainer: React.FC<Props> = ({onSubmit}) => {
  
   return (
     <div className={styles["container"]}>
-      <InputBar />
-      <button className="submit"
-              tabIndex={2}
-              onClick={onSubmit}>Submit</button>
+        <InputBar />
+        <button className={styles["submit"]}
+                tabIndex={2}
+                onClick={onSubmit}>Submit</button>
     </div>
   )
 }

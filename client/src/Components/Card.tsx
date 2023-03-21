@@ -16,7 +16,8 @@ const Placeholder = () => {
 
 const Image = ({...props}) => {
    return <img crossOrigin="anonymous"
-               src={props.url} 
+               src={props.url}
+               loading="eager"
                alt="display image for news release" ></img>
 }
 
@@ -29,6 +30,7 @@ export const Card: React.FC<Props> = ({...props}) => {
     } else{
       setImageAvailability(false)
     }
+    console.log("test")
   }, [props.type])
   
   return(

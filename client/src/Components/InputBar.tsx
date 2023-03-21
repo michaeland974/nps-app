@@ -1,5 +1,5 @@
 import * as React from "react"
-import {MouseEvent, useContext, useState, useRef} from "react";
+import {MouseEvent, useContext, useState, useRef, useEffect} from "react";
 import { OptionsContext, InputValueContext } from './../Containers/Main';
 import styles from './styles/InputBar.module.css'
 
@@ -19,7 +19,6 @@ export const InputBar: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const onInputBarClick = (e: MouseEvent) => {
-    // e.preventDefault()
     setOpen(prevValue => !prevValue)
   }
 
@@ -27,7 +26,7 @@ export const InputBar: React.FC = () => {
     setInputValue(e.target.value);
     if(inputValue !== ''){
       e.stopPropagation();
-      setOpen(true);
+      setOpen(true)
     }
   }
 
@@ -37,11 +36,10 @@ export const InputBar: React.FC = () => {
   }
 
   const clearInput = (e: MouseEvent) => {
-      e.stopPropagation()
-      setInputValue("");
+      e.stopPropagation()       
       setOpen(true)
-      //input ref necessary to prevent onblur bug
-      inputRef.current?.focus();
+      setInputValue(""); 
+      inputRef.current?.focus();//input ref necessary to prevent onblur bug
   }
 
   const toggleClass = (toggleCondition: boolean,
@@ -101,10 +99,9 @@ export const InputBar: React.FC = () => {
           <button className={styles["arrow"]}></button>
         </div> 
 
-      {//<button> will cause bug with e.stopPropagation()
-      }<span className={toggleClass((inputValue===''), "clear-button", "hide")}
-                onClick={clearInput}> x 
-       </span>
+      <button className={toggleClass((inputValue===''), "clear-button", "hide")}
+             onClick={(e) => clearInput(e) }> x 
+       </button>
       </div>
 
       <ul className={toggleClass((!isOpen), "dropdown", "hide")}>

@@ -30,7 +30,10 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
     /** substring necessary for edge case when
      *  json returns multiple park codes for single park 
      */
-    if(optionsParkCode === parkCode?.substring(0,4)){
+    // if(optionsParkCode === parkCode?.substring(0,4)){
+    //   return optionsParkName;
+    // }
+    if(parkCode?.includes(optionsParkCode)){
       return optionsParkName;
     }
   })
