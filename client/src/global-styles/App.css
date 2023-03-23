@@ -1,12 +1,11 @@
 @font-face {
-  font-family: PTSans;
-  src: url('./PTSans-Regular.ttf');
+  font-family: Jost;
+  src: url('./Jost-Regular.ttf');
 }
 
 @font-face {
-  font-family: PTBold;
-  src: url('./PTSans-Bold.ttf');
-  font-weight: 500;
+  font-family: JostBold;
+  src: url('./Jost-Bold.ttf');
 }
 
 @font-face {
@@ -24,17 +23,16 @@
   --contrast: #f0e5d3;
   --highlight: #8C5063;
 
-  height:100%;
-  font-family: PTSans;
+  height:100vh; 
+  font-family: Jost;
   font-size: 1rem;
   /* background-color: var(--background); */
   background-image: url('./peaks-haikei.svg');
   background-size: cover;
-
-  overflow-y: hidden;
 }
 
 .App{
+  /* height: 80%; */
   height: 100%;
   width: 100%;
   display: flex;

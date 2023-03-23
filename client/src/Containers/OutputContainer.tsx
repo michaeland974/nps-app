@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styles from './styles/OutputContainer.module.css'
 import { OptionsContext } from './../Containers/Main';
+import { Json } from './../Containers/Main';
 //Hooks
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useFetch } from '../hooks/useFetch';
@@ -18,6 +19,10 @@ type Props = {
 
 export interface DisplayType {
   type: 'rows' | 'card'
+}
+
+interface NewsType {
+  type: 'recent' | 'park'
 }
 
 // json response from API does not include park name property
@@ -54,17 +59,27 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
                                                   currentPark}) => {
   const [scrollPos, setScrollPos] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [endpoint, setEndpoint] = useState("recent")  
+  const [endpoint, setEndpoint] = useState("recent")
+  //contentDisplay gets cached, if users toggles between recent/park news
+  const [previousParkContent, setPreviousParkContent] = useState<Article[]>([])
   const [{ response,
-           contentDisplay, 
+           recentNews,
+           contentDisplay,
+           setContentDisplay,
            handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
   
   const [cardProps, setCardProps] = useState<Article>({});                                                 
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
   const {parkOptions} = useContext(OptionsContext)
-    
+  
+  const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
+   
   useEffect(() => {
-    handleNewsData(response.data)
+    if(endpoint !== 'recent'){
+      setNewsType({type: 'park'})
+    }
+    
+    handleNewsData(response.data, endpoint)
   }, [response])
   
   useEffect(() => {
@@ -106,14 +121,44 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     setDisplayType({type: 'card'})
   }
 
-  const renderHeader = () => {
-    const text = (currentPark === "" ? `RECENT NEWS` : 
-                                       `${currentPark} RELATED NEWS`)
-    //setTimeout
-    return <h1 className={styles["header"]}>
-                {response.isLoading ? <Loading /> : <span>{text}</span>}
-           </h1>
+  const toggleClass = (toggleCondition: boolean,
+                       defaultName:string, 
+                       toggledName: string) => {
+    if(toggleCondition){
+      return `${styles[defaultName]} ${styles[toggledName]}`
+    }
+    return styles[defaultName]
+}
+
+  const renderChips = () => {
+    const handleClick = (type: NewsType) => {
+      setNewsType(type)
+
+      if(type.type==='recent'){
+        setPreviousParkContent(contentDisplay)
+        setContentDisplay(recentNews);
+      }
+      else if(type.type==='park'){
+        setContentDisplay(previousParkContent);
+      }
+    }
+    return (<div className={styles['chip-group']}>
+              <h1 className={toggleClass((newsType?.type === 'recent'), 
+                             "chip", 
+                             "selected")}
+                  onClick={() => handleClick({type: 'recent'})}>
+                RECENT NEWS
+              </h1>
+              <h1 className={toggleClass((newsType?.type === 'park'), 
+                             "chip", 
+                             "selected")}
+                  onClick={() => handleClick({type: 'park'})}>
+                PARK RELATED NEWS
+              </h1>
+            </div>
+    )
   }
+
 
   const RowDisplayMapped = (displayList: Article[]) => {
     const isEmpty = (displayList.length === 0)   
@@ -134,8 +179,11 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
                     abstract={article.abstract}
       />)
     })
+    const maxHeight = response.isLoading ? '100vh' : '100%'
+
     return (
-      <div className={styles["news-display"]}>
+      <div className={styles["news-display"]}
+           style={{height: maxHeight}}>
         {response.isLoading ? <Loading /> : rowMap}
       </div>
     )
@@ -156,7 +204,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     <div className={styles["container"]}
          ref={scrollRef}
          onScroll={handleScroll}>
-      {renderHeader()}
+      {renderChips()}
       <>
         {renderDisplaySwitch(displayType.type, 
                              contentDisplay)}

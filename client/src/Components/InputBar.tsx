@@ -94,9 +94,10 @@ export const InputBar: React.FC = () => {
                value={overflowName(inputValue)}
                onChange={handleInput}
                tabIndex={1}/>
-
-        <div className={styles["arrow-container"]}>
-          <button className={styles["arrow"]}></button>
+       <div className={styles["arrow-container"]}
+             >
+          <button className={styles["arrow"]}
+                  onClick={(e) => inputRef.current?.focus()}></button>
         </div> 
 
       <button className={toggleClass((inputValue===''), "clear-button", "hide")}

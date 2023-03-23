@@ -11,8 +11,8 @@ export const useFetch = (url: string,
                          dependencies: [] | [string]) => {
   const [response, setResponse] = useState<dataObj>({ isLoading: true })                          
   const [data, setData] = useState<Promise<Json>>()
-  //const [isLoading, setLoading] = useState(false);
-  const [contentDisplay, setContentDisplay] = useState<Article[]>([])
+  const [contentDisplay, setContentDisplay] = useState<Article[]>([]) 
+  const [recentNews, setRecentNews] = useState<Article[]>([])
   const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
 
   const handleParkOptions = async(obj: Promise<Json> | undefined) => {
@@ -29,7 +29,9 @@ export const useFetch = (url: string,
   }
 
   const handleNewsData = useCallback( 
-    async(obj: Promise<Json> | undefined) => {
+    // async(obj: Promise<Json> | undefined) => {
+      async(obj: Promise<Json> | undefined, endpoint: string) => {
+
        const data: Article[] | undefined = (await obj)?.data
        let list: Article[] = [];
  
@@ -44,28 +46,13 @@ export const useFetch = (url: string,
                 };
               }
             }
-         } 
+         }
+         if(endpoint === 'recent'){
+          setRecentNews(list)
+         }
+         
          setContentDisplay(list)
          return list
-  }, [])
-
-  const handleNewsDataByPark = useCallback(
-    async(obj: Promise<Json> | undefined) => {
-        const data: Article[] | undefined = (await obj)?.data
-        
-        if(data !== undefined){
-          try{
-            setContentDisplay(data)
-          }
-          catch(error){
-            if (error instanceof Error) {
-              return {
-                message: error.message,
-              };
-            }
-          }
-        }
-        //return data;
   }, [])
   
   const fetchData = async() => {
@@ -85,6 +72,7 @@ export const useFetch = (url: string,
   }, dependencies)
   
   return [{ response,
+            recentNews,
             contentDisplay, setContentDisplay, 
             parkOptions,
             handleParkOptions,
