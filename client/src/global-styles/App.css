@@ -22,6 +22,8 @@
   --secondary: #37402B;
   --contrast: #f0e5d3;
   --highlight: #8C5063;
+  --custom-shadow: inset 20px 20px 20px 20px rgba(0, 0, 0, 0.07), 
+                   inset 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
 
   height:100vh; 
   font-family: Jost;

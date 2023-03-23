@@ -1,22 +1,13 @@
 .container{
-  --custom-shadow: inset 20px 20px 20px 20px rgba(0, 0, 0, 0.07), 
-                   inset 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
-
-  background-color: var(--secondary);
-  color: white;
-  /* border-radius: 10px; */
-  /* width: 100%;
-  height: 80vh; */
-
   display: flex;
   flex-direction: column;
   flex: 7;
   gap: 0.5rem;
 
-  /* padding: 1rem 0 1rem 0; */
-  /* padding: 1rem 0 1rem 0; */
-  /* overflow: overlay; */
-  /* overflow-y: scroll; */
+  background-color: var(--secondary);
+  color: white;
+  border-top: 1px solid black;
+
   overflow: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
@@ -28,6 +19,13 @@
   background: transparent; /* make scrollbar transparent */
   /* position: relative;
   z-index: -1; */
+}
+
+.header-container{
+  background-color: var(--secondary);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 /* ::-webkit-scrollbar-thumb {

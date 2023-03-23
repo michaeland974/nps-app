@@ -131,6 +131,9 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 }
 
   const renderChips = () => {
+    const recentDisplayTypeBool = (newsType.type === 'recent');
+    const parkDisplayTypeBool = (newsType.type === 'park');
+    
     const handleClick = (type: NewsType) => {
       setNewsType(type)
 
@@ -142,20 +145,30 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
         setContentDisplay(previousParkContent);
       }
     }
-    return (<div className={styles['chip-group']}>
-              <h1 className={toggleClass((newsType?.type === 'recent'), 
-                             "chip", 
-                             "selected")}
-                  onClick={() => handleClick({type: 'recent'})}>
-                RECENT NEWS
+    
+    const renderArticleQuantity = (typeCondition: boolean): string => {
+      if(contentDisplay.length > 0 && typeCondition){
+        return `(${contentDisplay.length})`
+      }
+      return ''
+    }
+
+    return (<>
+              <h1 onClick={() => handleClick({type: 'recent'})}
+                  className={toggleClass(recentDisplayTypeBool, 
+                                        "chip", 
+                                        "selected")
+                  }>
+                    RECENT NEWS {renderArticleQuantity(recentDisplayTypeBool)}
               </h1>
-              <h1 className={toggleClass((newsType?.type === 'park'), 
-                             "chip", 
-                             "selected")}
-                  onClick={() => handleClick({type: 'park'})}>
-                PARK RELATED NEWS
+              <h1 onClick={() => handleClick({type: 'park'})}
+                  className={toggleClass(parkDisplayTypeBool, 
+                                        "chip", 
+                                        "selected")
+                  }>
+                    PARK RELATED NEWS {renderArticleQuantity(parkDisplayTypeBool)}
               </h1>
-            </div>
+            </>
     )
   }
 
@@ -204,11 +217,17 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     <div className={styles["container"]}
          ref={scrollRef}
          onScroll={handleScroll}>
-      {renderChips()}
-      <>
-        {renderDisplaySwitch(displayType.type, 
-                             contentDisplay)}
-      </>
+     
+      <div className={styles['header-container']}>
+        <div className={styles['chip-group']}>
+          {renderChips()}
+        </div>
+      </div>
+        <>
+          {renderDisplaySwitch(displayType.type, 
+                              contentDisplay)}
+        </>
+   
     </div>
     )
 }
