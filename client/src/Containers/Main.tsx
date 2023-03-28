@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './styles/Main.module.css'
 //Hooks
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useRef } from 'react';
 import { useFetch } from '../hooks/useFetch';
 //Containers
 import { InputContainer } from "./InputContainer";
@@ -41,17 +41,27 @@ type OptionsContextType = {
 type InputValueContextType = {
   inputValue: string
   setInputValue: React.Dispatch<React.SetStateAction<string>>
+  inputBarRef: React.RefObject<HTMLInputElement>
+}
+
+type OutputContainerContextType = {
+  scrollRef: React.RefObject<HTMLDivElement>
 }
 
 export const OptionsContext = createContext<OptionsContextType>(
   {} as OptionsContextType)
 export const InputValueContext = createContext<InputValueContextType>(
   {} as InputValueContextType)
+export const OutputContainerContext = createContext<OutputContainerContextType>(
+  {} as OutputContainerContextType)
+
 
 export const Main: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [inputValueCode, setInputValueCode] = useState('recent');
   const [currentPark, setCurrentPark] = useState('')
+  const inputBarRef = useRef<HTMLInputElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const [{ response, 
            parkOptions, 
@@ -77,9 +87,12 @@ export const Main: React.FC = () => {
 
   return (
     <OptionsContext.Provider value={{parkOptions}}>
-      <InputValueContext.Provider value={{inputValue, setInputValue}}>
-        
-        <div className={styles["container"]}>
+    <InputValueContext.Provider value={{inputValue, 
+                                        setInputValue, 
+                                        inputBarRef}}>
+    <OutputContainerContext.Provider value={{scrollRef}}>
+
+        <div className={styles.container}>
           <InputContainer onSubmit={() => {
             getParkCodeFromInput(parkOptions)
           }}/>
@@ -89,7 +102,8 @@ export const Main: React.FC = () => {
                            currentPark={currentPark} />
         </div>
       
-      </InputValueContext.Provider>
+    </OutputContainerContext.Provider>
+    </InputValueContext.Provider>
     </OptionsContext.Provider>
     )
 }

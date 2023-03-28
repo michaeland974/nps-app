@@ -65,3 +65,9 @@
   box-shadow: var(--custom-shadow);
   background-color: var(--highlight);
 }
+
+.no-click {
+  background-color: purple;
+  pointer-events: none;
+}
+

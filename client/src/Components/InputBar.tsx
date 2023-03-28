@@ -1,7 +1,8 @@
 import * as React from "react"
 import {MouseEvent, useContext, useState, useRef, useEffect} from "react";
-import { OptionsContext, InputValueContext } from './../Containers/Main';
+import { OptionsContext, InputValueContext, OutputContainerContext } from './../Containers/Main';
 import styles from './styles/InputBar.module.css'
+import { classMerger } from "../utils/classMerger";
 
 /** handling park names that are too lengthy
  *  for input bar on mobile screen */
@@ -15,8 +16,21 @@ const overflowName = (name: string) => {
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
   const {parkOptions} = useContext(OptionsContext)
-  const {inputValue, setInputValue} = useContext(InputValueContext)
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const {inputValue, setInputValue, inputBarRef} = useContext(InputValueContext)
+  const {scrollRef} = useContext(OutputContainerContext)
+
+  const handlePointerEvents = () => {
+    const add = () => scrollRef.current!.classList.add("no-click");
+    const remove = () => scrollRef.current!.classList.remove("no-click")
+
+    return {add, remove}
+  }
+
+  //disable outer click events when dropdown is open
+  useEffect(() => {
+    const {add, remove} = handlePointerEvents()
+    isOpen ? add() : remove();
+  }, [isOpen])
 
   const onInputBarClick = (e: MouseEvent) => {
     setOpen(prevValue => !prevValue)
@@ -31,24 +45,15 @@ export const InputBar: React.FC = () => {
   }
 
   const onOptionSelect = (option:string) => {
-   setInputValue(option)
-   setOpen(false);
+    setInputValue(option)
+    setOpen(false);
   }
 
   const clearInput = (e: MouseEvent) => {
-      e.stopPropagation()       
+      e.stopPropagation()
       setOpen(true)
       setInputValue(""); 
-      inputRef.current?.focus();//input ref necessary to prevent onblur bug
-  }
-
-  const toggleClass = (toggleCondition: boolean,
-                       defaultName:string, 
-                       toggledName: string) => {
-    if(toggleCondition){
-      return `${styles[defaultName]} ${styles[toggledName]}`
-    }
-    return styles[defaultName]
+      inputBarRef.current?.focus();//input ref necessary to prevent onblur bug
   }
 
   const renderOptions = (list: string[][] | [] | undefined) => {
@@ -65,47 +70,44 @@ export const InputBar: React.FC = () => {
         return (
           <li key={i}
                className={styles["option"]}
-             //onMouseDown prevents onBlur error
-               onMouseDown={(e) => {                    
-                //  e.preventDefault()
-                  onOptionSelect(parkName) }} >   
+             //onMouseDown prevents onBlur bug
+               onMouseDown={(e) => onOptionSelect(parkName) }>   
             {parkName}
           </li> )
     })
   }
-//! ON CHANGE
+
   return(
     <div className={styles["container"]}
          onBlur={(e) => {
-         if(!e.relatedTarget){
-
-           setOpen(false)
-         }
-         }}
-         >
+            if(!e.relatedTarget) setOpen(false)
+         }}>
       <div className={styles["bar-container"]}
            onClick={onInputBarClick}>
         
         <input className={styles["bar"]} 
                type="text" 
-               ref={inputRef}
+               ref={inputBarRef}
                placeholder="Search for park"
-              //  value={inputValue} 
                value={overflowName(inputValue)}
                onChange={handleInput}
                tabIndex={1}/>
-       <div className={styles["arrow-container"]}
-             >
-          <button className={styles["arrow"]}
-                  onClick={(e) => inputRef.current?.focus()}></button>
-        </div> 
+       
+        <div className={styles["arrow-container"]}>
+            <button className={styles["arrow"]}
+                    onClick={(e) => {
+                      inputBarRef.current?.focus()
+                    }}>    
+            </button>
+         </div> 
 
-      <button className={toggleClass((inputValue===''), "clear-button", "hide")}
-             onClick={(e) => clearInput(e) }> x 
-       </button>
+        <button className={classMerger((inputValue===''), styles["clear-button"], 
+                                                          styles["hide"])}
+                onClick={(e) => clearInput(e) }> x </button>
       </div>
 
-      <ul className={toggleClass((!isOpen), "dropdown", "hide")}>
+      <ul className={classMerger((!isOpen), styles["dropdown"], 
+                                            styles["hide"])}>
         {renderOptions(parkOptions)}
       </ul>
     </div>

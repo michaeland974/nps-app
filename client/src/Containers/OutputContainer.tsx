@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styles from './styles/OutputContainer.module.css'
-import { OptionsContext } from './../Containers/Main';
+import { OptionsContext, OutputContainerContext } from './../Containers/Main';
 import { Json } from './../Containers/Main';
+import { classMerger } from '../utils/classMerger';
 //Hooks
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useFetch } from '../hooks/useFetch';
+import { InputValueContext } from './../Containers/Main';
 //Components
 import { Article } from './Main';
 import { RowDisplay } from '../Components/RowDisplay';
@@ -32,12 +34,6 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
     const optionsParkName = item[0];
     const optionsParkCode = item[1].toLowerCase();
   
-    /** substring necessary for edge case when
-     *  json returns multiple park codes for single park 
-     */
-    // if(optionsParkCode === parkCode?.substring(0,4)){
-    //   return optionsParkName;
-    // }
     if(parkCode?.includes(optionsParkCode)){
       return optionsParkName;
     }
@@ -57,8 +53,11 @@ export const renderDate = (releaseDate: string | undefined): string => {
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
                                                   setInputValueCode, 
                                                   currentPark}) => {
+  
   const [scrollPos, setScrollPos] = useState(0)
-  const scrollRef = useRef<HTMLDivElement>(null)
+ // const scrollRef = useRef<HTMLDivElement>(null)
+  const {scrollRef} = useContext(OutputContainerContext)
+  const {inputBarRef} = useContext(InputValueContext)
   const [endpoint, setEndpoint] = useState("recent")
   //contentDisplay gets cached, if users toggles between recent/park news
   const [previousParkContent, setPreviousParkContent] = useState<Article[]>([])
@@ -164,17 +163,23 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 
     return (<>
               <h1 onClick={() => handleClick({type: 'recent'})}
-                  className={toggleClass(recentDisplayTypeBool, 
-                                        "chip", 
-                                        "selected")
-                  }>
+                  // className={toggleClass(recentDisplayTypeBool, 
+                  //                       "chip", 
+                  //                       "selected")}
+                  className={classMerger(recentDisplayTypeBool, 
+                                         styles["chip"], 
+                                         styles["selected"])}
+              >
                     RECENT NEWS {renderArticleQuantity(recentDisplayTypeBool)}
               </h1>
               <h1 onClick={() => handleClick({type: 'park'})}
-                  className={toggleClass(parkDisplayTypeBool, 
-                                        "chip", 
-                                        "selected")
-                  }>
+                  // className={toggleClass(parkDisplayTypeBool, 
+                  //                       "chip", 
+                  //                       "selected")}
+                  className={classMerger(parkDisplayTypeBool, 
+                                         styles["chip"], 
+                                         styles["selected"])}
+                  >
                     PARK RELATED NEWS {renderArticleQuantity(parkDisplayTypeBool)}
               </h1>
             </>
@@ -247,11 +252,11 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
           {renderChips()}
         </div>
       </div>
-        <>
-          {renderDisplaySwitch(displayType.type, 
-                               contentDisplay)}
-        </>
-   
+
+      <>
+        {renderDisplaySwitch(displayType.type, 
+                              contentDisplay)}
+      </>
     </div>
     )
 }
