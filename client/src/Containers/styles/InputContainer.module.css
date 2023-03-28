@@ -5,31 +5,23 @@
   gap: 1rem;
 
   background-color: var(--first);
-  /* width: 100%; */
+
   padding: 1rem;
 }
 
 .submit{
+  background-color: var(--contrast);
+  color: black;
   border-radius: 10px;
   border: 3px double black;
-  background-color: var(--contrast);
   box-shadow: 0 0 0 2px black, 
               0 0 0 2px black;
-  position: relative;
-  color: black;
   font-weight: bold;
-  padding: 0.25rem 1rem 0.25rem 1rem;
+  
+  position: relative;
   width: 100%;
+  padding: 0.25rem 1rem 0.25rem 1rem;
 }
-
-/* Add hover effects on touchstart and mouseenter.
-Remove hover effects on mouseleave, touchmove and click. */
-/* 
-.submit:hover,
-.submit:hover:after, .submit:hover::before{
-  background: var(--secondary);
-  color: white;
-} */
 
 @media (hover: hover) and (pointer: fine){
   .submit:hover {
@@ -42,20 +34,6 @@ Remove hover effects on mouseleave, touchmove and click. */
   background-color: var(--highlight);
   color: white;
 }
-
-/* .submit:before, 
-.submit:after{
-  content:" ";
-  display: block;
-  height: 1px;
-  border-radius: 10px;
-  width: 12rem;
-  position: absolute;
-  top: 40%;
-  background: black;
-}
-.submit:after{ right: -12rem; }
-.submit:before{ left: -12rem; } */
 
 
 

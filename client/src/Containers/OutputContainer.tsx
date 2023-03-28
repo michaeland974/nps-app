@@ -87,12 +87,19 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
   }, [inputValueCode])
 
   useEffect(() => {
-    if(displayType.type === 'rows'){
-      scrollRef.current?.scrollTo(0, scrollPos)
+    if(scrollRef.current){
+      if(displayType.type === 'rows'){
+        scrollRef.current.style.overflow= 'scroll'
+        scrollRef.current.scrollTo(0, scrollPos)
+      }
+      if(displayType.type === 'card'){
+        scrollRef.current.style.overflow = 'hidden';
+        scrollRef.current.scrollTo(0, 0)
+        
+        // scrollRef.current?.scrollTo(0, 0)
+      }
     }
-    if(displayType.type === 'card'){
-      scrollRef.current?.scrollTo(0, 0)
-    }
+
   }, [displayType])
 
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {
@@ -131,8 +138,6 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 }
 
   const renderChips = () => {
-    const recentDisplayTypeBool = (newsType.type === 'recent');
-    const parkDisplayTypeBool = (newsType.type === 'park');
     
     const handleClick = (type: NewsType) => {
       setNewsType(type)
@@ -145,13 +150,17 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
         setContentDisplay(previousParkContent);
       }
     }
-    
+
     const renderArticleQuantity = (typeCondition: boolean): string => {
       if(contentDisplay.length > 0 && typeCondition){
         return `(${contentDisplay.length})`
+      }else{
+        return ''
       }
-      return ''
     }
+    
+    const recentDisplayTypeBool = (newsType.type === 'recent');
+    const parkDisplayTypeBool = (newsType.type === 'park');
 
     return (<>
               <h1 onClick={() => handleClick({type: 'recent'})}
@@ -171,7 +180,6 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
             </>
     )
   }
-
 
   const RowDisplayMapped = (displayList: Article[]) => {
     const isEmpty = (displayList.length === 0)   
@@ -193,11 +201,27 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
       />)
     })
     const maxHeight = response.isLoading ? '100vh' : '100%'
+    
+    const handleLoading = () => {
+      if(response.isLoading){
+        return <Loading />
+      } //if user toggles to "park related news" before selecting a park
+      else if(previousParkContent.length===0 && 
+              newsType.type==='park' && 
+              endpoint === 'recent'){
+        return <h1 id={styles["empty-state-message"]}>
+                Select a park.
+               </h1>
+      }else{
+        return rowMap
+      }
+    }
 
     return (
       <div className={styles["news-display"]}
            style={{height: maxHeight}}>
-        {response.isLoading ? <Loading /> : rowMap}
+        {/* {response.isLoading ? <Loading /> : rowMap} */}
+        {handleLoading()}
       </div>
     )
   }
@@ -225,7 +249,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
       </div>
         <>
           {renderDisplaySwitch(displayType.type, 
-                              contentDisplay)}
+                               contentDisplay)}
         </>
    
     </div>

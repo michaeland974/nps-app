@@ -1,18 +1,20 @@
 .loading {
-  width: 100px;
-  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  
+  width: 100px;
+  height: 100px;
  }
  
  .loading span{
-  width: 50px;
-  height: 30px;
   border-radius: 30px;
   background-color: var(--highlight);
   opacity: 1;
+  
+  width: 50px;
+  height: 30px;
  }
  
  .loading span:first-child {

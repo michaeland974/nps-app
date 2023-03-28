@@ -1,9 +1,8 @@
 .container{
-  /* change for mobile*/
+  flex: 4;
+  display: flex;
+  flex-direction: column;
 
   height: 85%;
   width: 100%;
-  /*onLoading change to 100vh for no blank space*/
-  display: flex;
-  flex-direction: column;
 }

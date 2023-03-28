@@ -40,10 +40,11 @@ export const Card: React.FC<Props> = ({...props}) => {
         }
         {isImageAvailable ? <Image url={props.image?.url}/> : 
                             <Placeholder />}
-
-        <span>Date: {renderDate(props.releaseDate)}</span>            
-        <h1 className={styles["title"]}>Title: {props.title}</h1>
-        <p>Abstract: {props.abstract}</p>
+        <main>
+          <span>Date: {renderDate(props.releaseDate)}</span>            
+          <h1 className={styles["title"]}>Title: {props.title}</h1>
+          <p className={styles["abstract"]}>Abstract: {props.abstract}</p>
+        </main>
         
         <div className={styles["footer"]}>
           <button id={styles["previous"]}

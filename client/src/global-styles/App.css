@@ -1,44 +1,37 @@
-@font-face {
-  font-family: Jost;
-  src: url('./Jost-Regular.ttf');
-}
-
-@font-face {
-  font-family: JostBold;
-  src: url('./Jost-Bold.ttf');
-}
-
-@font-face {
-  font-family: PottaOne;
-  src: url('./PottaOne-Regular.ttf');
-}
+@font-face {  font-family: Jost;
+              src: url('./fonts/Jost-Regular.ttf'); }
+@font-face {  font-family: JostBold;
+              src: url('./fonts/Jost-Bold.ttf'); }
+@font-face {  font-family: Mirza;
+              src: url('./fonts/Mirza-SemiBold.ttf'); }
 
 #root, html{
+  --custom-shadow: inset 20px 20px 20px 20px rgba(0, 0, 0, 0.07), 
+                   inset 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
+/* Colors */
   --background: #e3b374;
   --background-with-shade: #bb9059ac; 
-  /* --background: #e9bb7f; */
-  /* --background-with-tint: rgba(222, 193, 155); */
   --first: #788C5E;
   --secondary: #37402B;
   --contrast: #f0e5d3;
   --highlight: #8C5063;
-  --custom-shadow: inset 20px 20px 20px 20px rgba(0, 0, 0, 0.07), 
-                   inset 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
+/* Fonts */
+  --fs-xl: clamp(1.75rem, 4vw, 2rem);
+  --fs-400: 1rem;
 
   height:100vh; 
   font-family: Jost;
   font-size: 1rem;
-  /* background-color: var(--background); */
-  background-image: url('./peaks-haikei.svg');
+  background-image: url('./svg/peaks-haikei.svg');
   background-size: cover;
 }
 
 .App{
-  /* height: 80%; */
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   align-content: center;
+
+  height: 100%;
+  width: 100%;
 }
