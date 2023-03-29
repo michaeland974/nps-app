@@ -51,14 +51,15 @@ export const renderDate = (releaseDate: string | undefined): string => {
 }
 
 export const OutputContainer: React.FC<Props> = ({inputValueCode, 
-                                                  setInputValueCode, 
-                                                  currentPark}) => {
+                                                  //setInputValueCode, currentPark
+                                                }) => {
   
   const [scrollPos, setScrollPos] = useState(0)
- // const scrollRef = useRef<HTMLDivElement>(null)
-  const {scrollRef} = useContext(OutputContainerContext)
-  const {inputBarRef} = useContext(InputValueContext)
+  const {scrollRef, 
+         displayType, 
+         setDisplayType} = useContext(OutputContainerContext)
   const [endpoint, setEndpoint] = useState("recent")
+  
   //contentDisplay gets cached, if users toggles between recent/park news
   const [previousParkContent, setPreviousParkContent] = useState<Article[]>([])
   const [{ response,
@@ -68,9 +69,8 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
            handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
   
   const [cardProps, setCardProps] = useState<Article>({});                                                 
-  const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
+ // const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
   const {parkOptions} = useContext(OptionsContext)
-  
   const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
    
   useEffect(() => {
@@ -127,20 +127,11 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
     setDisplayType({type: 'card'})
   }
 
-  const toggleClass = (toggleCondition: boolean,
-                       defaultName:string, 
-                       toggledName: string) => {
-    if(toggleCondition){
-      return `${styles[defaultName]} ${styles[toggledName]}`
-    }
-    return styles[defaultName]
-}
-
   const renderChips = () => {
     
     const handleClick = (type: NewsType) => {
       setNewsType(type)
-
+      
       if(type.type==='recent'){
         setPreviousParkContent(contentDisplay)
         setContentDisplay(recentNews);
@@ -148,6 +139,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
       else if(type.type==='park'){
         setContentDisplay(previousParkContent);
       }
+      setDisplayType({type: 'rows'})
     }
 
     const renderArticleQuantity = (typeCondition: boolean): string => {
@@ -163,23 +155,15 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
 
     return (<>
               <h1 onClick={() => handleClick({type: 'recent'})}
-                  // className={toggleClass(recentDisplayTypeBool, 
-                  //                       "chip", 
-                  //                       "selected")}
                   className={classMerger(recentDisplayTypeBool, 
                                          styles["chip"], 
-                                         styles["selected"])}
-              >
+                                         styles["selected"])}>
                     RECENT NEWS {renderArticleQuantity(recentDisplayTypeBool)}
               </h1>
               <h1 onClick={() => handleClick({type: 'park'})}
-                  // className={toggleClass(parkDisplayTypeBool, 
-                  //                       "chip", 
-                  //                       "selected")}
                   className={classMerger(parkDisplayTypeBool, 
                                          styles["chip"], 
-                                         styles["selected"])}
-                  >
+                                         styles["selected"])}>
                     PARK RELATED NEWS {renderArticleQuantity(parkDisplayTypeBool)}
               </h1>
             </>

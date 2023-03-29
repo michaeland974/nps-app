@@ -69,9 +69,9 @@ export const InputBar: React.FC = () => {
       
         return (
           <li key={i}
-               className={styles["option"]}
-             //onMouseDown prevents onBlur bug
-               onMouseDown={(e) => onOptionSelect(parkName) }>   
+              className={styles["option"]}
+            //onMouseDown prevents onBlur bug
+              onMouseDown={(e) => onOptionSelect(parkName) }>   
             {parkName}
           </li> )
     })

@@ -34,6 +34,11 @@ export interface Article{
   relatedParks?: Park[]
 } 
 
+type DisplayType = {
+  type: 'rows' | 'card'
+  //setDisplayType: React.Dispatch<React.SetStateAction<'rows' | 'card'>>
+}
+
 type OptionsContextType = {
   parkOptions: string[][] | []
 }
@@ -46,7 +51,14 @@ type InputValueContextType = {
 
 type OutputContainerContextType = {
   scrollRef: React.RefObject<HTMLDivElement>
+  displayType: {type : 'rows' | 'card'}
+  setDisplayType: React.Dispatch<React.SetStateAction<DisplayType>>
 }
+
+// type DisplayTypeContextType = {
+//   displayType: 'rows' | 'card'
+//   setDisplayType: React.Dispatch<React.SetStateAction<displayType>>
+// }
 
 export const OptionsContext = createContext<OptionsContextType>(
   {} as OptionsContextType)
@@ -55,13 +67,13 @@ export const InputValueContext = createContext<InputValueContextType>(
 export const OutputContainerContext = createContext<OutputContainerContextType>(
   {} as OutputContainerContextType)
 
-
 export const Main: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [inputValueCode, setInputValueCode] = useState('recent');
   const [currentPark, setCurrentPark] = useState('')
   const inputBarRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
 
   const [{ response, 
            parkOptions, 
@@ -77,8 +89,6 @@ export const Main: React.FC = () => {
         const parkCode = item[1]
       
       if(parkName === inputValue){
-        console.log(`test park code => ${parkCode}`)
-        console.log(`test park name => ${parkName}`)
         setInputValueCode(parkCode)
         setCurrentPark(parkName)
       }
@@ -87,14 +97,19 @@ export const Main: React.FC = () => {
 
   return (
     <OptionsContext.Provider value={{parkOptions}}>
+    
     <InputValueContext.Provider value={{inputValue, 
                                         setInputValue, 
                                         inputBarRef}}>
-    <OutputContainerContext.Provider value={{scrollRef}}>
+    
+    <OutputContainerContext.Provider value={{scrollRef, 
+                                             displayType, 
+                                             setDisplayType}}>
 
         <div className={styles.container}>
           <InputContainer onSubmit={() => {
             getParkCodeFromInput(parkOptions)
+            setDisplayType({type: 'rows'})
           }}/>
 
           <OutputContainer inputValueCode={inputValueCode}
