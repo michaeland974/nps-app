@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './styles/Card.module.css'
+import { Loading } from './Loading'
 import { Article } from '../Containers/Main'
 import { renderDate } from '../Containers/OutputContainer'
 import { DisplayType } from '../Containers/OutputContainer'
@@ -11,14 +12,17 @@ interface Props extends Article, DisplayType{
 
 //Fix BACK button
 const Placeholder = () => {
-  return <img src="/images/noun-hiking.png" alt="placeholder hikers"></img>
+  return <img className={styles["article-image"]}
+              src="/images/noun-hiking.png" 
+              alt="placeholder hikers"></img>
 }
 
 const Image = ({...props}) => {
-   return <img crossOrigin="anonymous"
-               src={props.url}
-               loading="eager"
-               alt="display image for news release" ></img>
+  return <img className={styles["article-image"]}
+              crossOrigin="anonymous"
+              src={props.url}
+              loading="eager"
+              alt="display image for news release" ></img>
 }
 
 export const Card: React.FC<Props> = ({...props}) => {
@@ -30,20 +34,26 @@ export const Card: React.FC<Props> = ({...props}) => {
     } else{
       setImageAvailability(false)
     }
-    console.log("test")
-  }, [props.type])
+  }, [props.image])
+  // }, [props.type])
   
   return(
-    <div className={styles["card"]}>
-      
-        {//<h1>Park Name: {props.parkName}</h1>
-        }
-        {isImageAvailable ? <Image url={props.image?.url}/> : 
-                            <Placeholder />}
-        <main>
-          <span>Date: {renderDate(props.releaseDate)}</span>            
-          <h1 className={styles["title"]}>Title: {props.title}</h1>
-          <p className={styles["abstract"]}>Abstract: {props.abstract}</p>
+    <div className={styles["container"]}>
+     
+      <div className={styles["card"]}>
+
+        <div className={styles["header"]}>
+          {props.parkName}
+        </div>
+        
+        <main className={styles["content"]}>
+          <h1 className={styles["title"]}>{props.title}</h1>
+          
+          {isImageAvailable ? <Image url={props.image?.url}/> : 
+                              <Placeholder />}
+          <p className={styles["abstract"]}>{props.abstract}</p>
+
+          <span className={styles["date"]}>{renderDate(props.releaseDate)}</span>            
         </main>
         
         <div className={styles["footer"]}>
@@ -54,6 +64,8 @@ export const Card: React.FC<Props> = ({...props}) => {
              target="_blank"
              rel="noreferrer">Visit</a>
         </div>
+      </div>
+
     </div>
   )
 }

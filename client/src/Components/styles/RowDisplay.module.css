@@ -31,7 +31,6 @@
   font-weight: bold;
   border-bottom: 6px solid var(--highlight);
   
-  margin: -0.75rem;
   padding: 0.75rem 1rem 0.75rem 1.5rem;
 }
 
@@ -43,7 +42,7 @@
 }
 
 .date{
-  color: rgb(176, 176, 176);
+  color: var(--grey);
   font-style: italic;
 }
 

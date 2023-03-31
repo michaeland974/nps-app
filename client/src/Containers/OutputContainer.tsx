@@ -199,7 +199,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode,
               newsType.type==='park' && 
               endpoint === 'recent'){
         return <h1 id={styles["empty-state-message"]}>
-                Select a park.
+                Select a park
                </h1>
       }else{
         return rowMap

@@ -8,16 +8,16 @@
   color: white;
   border-top: 1px solid black;
 
-  overflow: scroll;
+  overflow-y: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
 }
 
-.container::-webkit-scrollbar, 
+/* .container::-webkit-scrollbar, 
 .container::-webkit-scrollbar-track  {
   width: 0px;
   background: transparent; 
-}
+} */
 
 .header-container{
   background-color: var(--secondary);
@@ -64,6 +64,13 @@
 .selected{
   box-shadow: var(--custom-shadow);
   background-color: var(--highlight);
+}
+
+#empty-state-message{
+  text-align: center;
+  padding: 2rem;
+  font-size: var(--fs-xl);
+  color: var(--contrast);
 }
 
 .no-click {
