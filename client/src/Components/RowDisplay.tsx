@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styles from './styles/RowDisplay.module.css'
+//Components
 import { Article } from '../Containers/Main'
 
 interface Props extends Article {

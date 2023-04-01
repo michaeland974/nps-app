@@ -1,0 +1,40 @@
+.header-container{
+  background-color: var(--secondary);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.chip-group{
+  display: flex;
+  flex-direction: column;
+
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: rgba(51, 170, 51, .2);
+
+  margin: auto;
+  margin: 0.5rem;
+}
+
+.chip{
+  border-radius: 10px ;
+  color: var(--contrast);
+  cursor: pointer;
+  text-align: center;
+  
+  padding: 0.5rem;
+}
+
+@media (hover: hover) and (pointer: fine){
+  .chip:hover {
+    background-color: rgb(90, 50, 63);
+    color: var(--contrast);
+  }
+}
+
+.selected{
+  box-shadow: var(--custom-shadow);
+  background-color: var(--highlight);
+}

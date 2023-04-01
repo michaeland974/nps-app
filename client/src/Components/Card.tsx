@@ -1,16 +1,15 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './styles/Card.module.css'
-import { Loading } from './Loading'
+//Components
 import { Article } from '../Containers/Main'
-import { renderDate } from '../Containers/OutputContainer'
+import { renderDate } from '../utils/renderDate'
 import { DisplayType } from '../Containers/OutputContainer'
 
 interface Props extends Article, DisplayType{
   onClick?: (React.MouseEventHandler<HTMLButtonElement>)
 }
 
-//Fix BACK button
 const Placeholder = () => {
   return <img className={styles["article-image"]}
               src="/images/noun-hiking.png" 
@@ -35,7 +34,6 @@ export const Card: React.FC<Props> = ({...props}) => {
       setImageAvailability(false)
     }
   }, [props.image])
-  // }, [props.type])
   
   return(
     <div className={styles["container"]}>
@@ -49,8 +47,9 @@ export const Card: React.FC<Props> = ({...props}) => {
         <main className={styles["content"]}>
           <h1 className={styles["title"]}>{props.title}</h1>
           
-          {isImageAvailable ? <Image url={props.image?.url}/> : 
-                              <Placeholder />}
+          {//Add Container to this class, on throttled load image pops up late
+          isImageAvailable ? <Image url={props.image?.url}/> : 
+                             <Placeholder />}
           <p className={styles["abstract"]}>{props.abstract}</p>
 
           <span className={styles["date"]}>{renderDate(props.releaseDate)}</span>            
