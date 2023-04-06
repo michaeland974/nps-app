@@ -11,13 +11,26 @@
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
+  
+  /*scrollbar for media*/
+  padding-right: 5px;
 }
 
-/* .container::-webkit-scrollbar, 
-.container::-webkit-scrollbar-track  {
-  width: 0px;
-  background: transparent; 
-} */
+.container::-webkit-scrollbar, 
+.container::-webkit-scrollbar-thumb {
+  height: 0px;
+  width: 5px;
+  background: transparent;   
+}   
+
+.container::-webkit-scrollbar-corner {
+  background: rgba(0,0,0,0);
+}
+.container::-webkit-scrollbar-thumb {
+  background: #76a5384c;
+  border-radius: 10px;
+  width: 100%;
+}  
 
 .header-container{
   background-color: var(--secondary);
