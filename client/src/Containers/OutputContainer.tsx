@@ -55,7 +55,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
     contentDisplay,
     setContentDisplay,
     handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
-  const [cardProps, setCardProps] = useState<Article>({});                                                 
+  const [cardProps, setCardProps] = useState<Article>({}); 
     
   //contentDisplay gets cached, if users toggles between recent/park news
   const [previousParkContent, setPreviousParkContent] = useState<Article[]>([])

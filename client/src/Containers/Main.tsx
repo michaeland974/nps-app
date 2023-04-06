@@ -24,7 +24,7 @@ export interface Article{
   title?: string,
   url?: string,
   parkCode?: string,
-  releaseDate?: string //or date
+  releaseDate?: string 
   abstract?: string,
   image?: {
     url?: string,
@@ -97,15 +97,12 @@ export const Main: React.FC = () => {
 
   return (
     <OptionsContext.Provider value={{parkOptions}}>
-    
     <InputValueContext.Provider value={{inputValue, 
                                         setInputValue, 
                                         inputBarRef}}>
-    
     <OutputContainerContext.Provider value={{scrollRef, 
                                              displayType, 
                                              setDisplayType}}>
-
         <div className={styles.container}>
           <InputContainer onSubmit={() => {
             getParkCodeFromInput(parkOptions)
@@ -116,7 +113,6 @@ export const Main: React.FC = () => {
                            setInputValueCode={setInputValueCode}
                            currentPark={currentPark} />
         </div>
-      
     </OutputContainerContext.Provider>
     </InputValueContext.Provider>
     </OptionsContext.Provider>

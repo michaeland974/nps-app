@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './styles/Card.module.css'
 //Components
+import { Loading } from './Loading'
 import { Article } from '../Containers/Main'
 import { renderDate } from '../utils/renderDate'
 import { DisplayType } from '../Containers/OutputContainer'
@@ -46,12 +47,9 @@ export const Card: React.FC<Props> = ({...props}) => {
         
         <main className={styles["content"]}>
           <h1 className={styles["title"]}>{props.title}</h1>
-          
-          {//Add Container to this class, on throttled load image pops up late
-          isImageAvailable ? <Image url={props.image?.url}/> : 
-                             <Placeholder />}
+            {isImageAvailable ? <Image url={props.image?.url}/>: 
+                                <Placeholder />}
           <p className={styles["abstract"]}>{props.abstract}</p>
-
           <span className={styles["date"]}>{renderDate(props.releaseDate)}</span>            
         </main>
         
