@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
 
-  font-size: 1rem;
+  font-size: var(--fs-500);
   font-weight: bold;
   border-radius: 10px;
   background: rgba(51, 170, 51, .2);

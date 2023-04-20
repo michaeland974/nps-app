@@ -1,19 +1,26 @@
 .container{
-  flex: 7;
+  /* flex: 7; */
+  flex: 5;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 
   background-color: var(--secondary);
   color: white;
-  border-top: 1px solid black;
+  /* border-top: 1px solid black; */
 
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
-  
-  /*scrollbar for media*/
+
+  /*scrollbar for mobile*/
   padding-right: 5px;
+}
+@media only screen and (min-width: 750px)  {
+  .container > :not(:first-child){
+    /* margin: auto; */
+    padding: 1rem;
+  }
 }
 
 .container::-webkit-scrollbar, 
@@ -87,7 +94,6 @@
 }
 
 .no-click {
-  background-color: purple;
   pointer-events: none;
 }
 

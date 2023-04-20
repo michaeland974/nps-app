@@ -1,24 +1,24 @@
-.container{
+.card{
   --arrow-transform: rotate(130deg);
   --padding: clamp(0.25rem, 0.75rem, 1rem);
-  --image-height-mobile: 100px;
-
-  display: flex;
-  flex-direction: column;
-
-  min-height: 0;
+  --image-height: 100px;
   
-  background: rgba(51, 170, 51, .2);
-  border-radius: 10px;
-  box-shadow: 1.2px 2.4px 2.4px hsl(0deg 0% 0% / 0.46);
-}
-
-.card{
+  flex: 0.75;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  justify-self: center;
+  /* height: 80%; */
+    
+  /* background: rgba(51, 170, 51, .2); */
+  /* border-radius: 10px; */
+  /* box-shadow: 1.2px 2.4px 2.4px hsl(0deg 0% 0% / 0.46); */
+  
+  margin: auto;
 }
 
 .header{
+  /* add max height with scroll for mobile*/ 
   font-size: var(--fs-600);
   color: black;
   border-top-left-radius: 10px;
@@ -39,11 +39,13 @@
 
 /* Card Content */
 .card > .content {
+  flex: 1;
+  display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
 
-  padding-bottom: 1rem;
-
+  background: rgba(51, 170, 51, .2);
   -moz-box-shadow: 0px 3px 8px black;
   -webkit-box-shadow: 0px 3px 8px black;
   box-shadow: 0px 3px 8px black;
@@ -54,26 +56,37 @@
 }
 
 .title{ 
-  font-size: var(--fs-500); 
+  font-size: var(--fs-400); 
 }
+  @media only screen and (min-height: 715px)  {
+    .title{
+      font-size: var(--fs-500); 
+    }
+  }
 
 .card .abstract{
   font-size: var(--fs-400);
-  height: 13vh;
-
-  margin-bottom: 0.75rem;;
+  max-height: 13vh;
 
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none; /* Firefox 64 */
-  overflow: scroll;
+  overflow: auto;
+
+  /* background-color: orange; */
 }
 
 .article-image{
   background-size: cover;
   filter: drop-shadow(0px 0px 20px rgb(0 0 0 / 50%));
   
-  height: clamp(90px, 20vh, 100px);
+  height: clamp(90px, 20vh, var(--image-height));
 }
+  @media only screen and (min-height: 800px) 
+                     and (min-width: 450px){
+    .article-image{ 
+      --image-height: 200px; 
+    }
+  }
 
 #date{
   font-size: var(--fs-400);
@@ -122,8 +135,10 @@
   padding: 0.5rem;
   margin-right: 0.5rem;
 }
-/*FIX after click, background color stays colored*/
-#visit:hover, 
-#visit:focus{
+
+@media (hover: hover) and (pointer: fine){
+  #visit:hover {
     background-color: var(--highlight);
+    color: var(--contrast);
+  }
 }

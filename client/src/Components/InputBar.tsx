@@ -3,12 +3,20 @@ import {MouseEvent, useContext, useState, useRef, useEffect} from "react";
 import { OptionsContext, InputValueContext, OutputContainerContext } from './../Containers/Main';
 import styles from './styles/InputBar.module.css'
 import { classMerger } from "../utils/classMerger";
+import { overflowText } from "../utils/overflowText";
 
 /** handling park names that are too lengthy
  *  for input bar on mobile screen */
 const overflowName = (name: string) => {
   let isShort = (name.length < 24);
   const overflowName = (name.substring(0, 24))+"..."
+
+  return (isShort ? name : overflowName)
+}
+
+const overflowName2 = (name: string, overflowValue: number) => {
+  let isShort = (name.length < overflowValue);
+  const overflowName = (name.substring(0, overflowValue))+"..."
 
   return (isShort ? name : overflowName)
 }
@@ -89,7 +97,7 @@ export const InputBar: React.FC = () => {
                type="text" 
                ref={inputBarRef}
                placeholder="Search for park"
-               value={overflowName(inputValue)}
+               value={overflowText(inputValue, 24)}
                onChange={handleInput}
                tabIndex={1}/>
        
