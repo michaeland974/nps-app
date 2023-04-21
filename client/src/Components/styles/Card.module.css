@@ -74,6 +74,9 @@
 
   /* background-color: orange; */
 }
+.card .abstract::-webkit-scrollbar { /* Chrome, Safari, Opera*/
+  display: none;
+}
 
 .article-image{
   background-size: cover;

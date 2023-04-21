@@ -4,12 +4,13 @@ import { Header } from './Components/Header';
 import './global-styles/reset.css'
 import './global-styles/App.css';
 
-//Header image <img src={"/images/noun-trees.png"} id="logo" alt="trees"></img>
 const App = () => {
   
   return (
     <div className="App">
-      <Header />
+      <span className="mobile-header">
+        <Header />
+      </span>
       <Main />
     </div>
   );
