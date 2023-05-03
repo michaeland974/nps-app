@@ -27,16 +27,19 @@ export const InputBar: React.FC = () => {
   const {inputValue, setInputValue, inputBarRef} = useContext(InputValueContext)
   const {scrollRef} = useContext(OutputContainerContext)
 
-  const handlePointerEvents = () => {
-    const add = () => scrollRef.current!.classList.add("no-click");
-    const remove = () => scrollRef.current!.classList.remove("no-click")
-
+  const handlePointerEvents = (eventRef: React.RefObject<HTMLDivElement>) => {
+    const add = () => {
+      eventRef && eventRef.current ? eventRef.current.classList.add("no-click") : null
+    };
+    const remove = () => {
+      eventRef && eventRef.current ? eventRef.current.classList.remove("no-click") : null
+    };
     return {add, remove}
   }
 
   //disable outer click events when dropdown is open
   useEffect(() => {
-    const {add, remove} = handlePointerEvents()
+    const {add, remove} = handlePointerEvents(scrollRef!)
     isOpen ? add() : remove();
   }, [isOpen])
 
@@ -65,7 +68,6 @@ export const InputBar: React.FC = () => {
   }
 
   const renderOptions = (list: string[][] | [] | undefined) => {
-  
     const filterOnChange = list?.filter((options: string[]) => {
       const searchItem = inputValue.toLowerCase();
       const listOption = options[0].toLowerCase();
@@ -74,7 +76,6 @@ export const InputBar: React.FC = () => {
     
     return filterOnChange?.map((options: string[], i: number) => {
         const parkName = options[0]
-      
         return (
           <li key={i}
               className={styles["option"]}
@@ -115,7 +116,8 @@ export const InputBar: React.FC = () => {
       </div>
 
       <ul className={classMerger((!isOpen), styles["dropdown"], 
-                                            styles["hide"])}>
+                                            styles["hide"])}
+          data-testid="dropdown-element">
         {renderOptions(parkOptions)}
       </ul>
     </div>

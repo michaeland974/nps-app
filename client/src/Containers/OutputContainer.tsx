@@ -73,7 +73,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
   }, [inputValueCode])
 
   useEffect(() => {
-    if(scrollRef.current){
+    if(scrollRef && scrollRef.current){
       if(displayType.type === 'rows'){
         scrollRef.current.style.overflow= 'scroll'
         scrollRef.current.scrollTo(0, scrollPos)

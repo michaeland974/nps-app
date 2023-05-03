@@ -34,7 +34,7 @@ export interface Article{
   relatedParks?: Park[]
 } 
 
-type DisplayType = {
+export interface DisplayType{
   type: 'rows' | 'card'
   //setDisplayType: React.Dispatch<React.SetStateAction<'rows' | 'card'>>
 }
@@ -49,8 +49,9 @@ type InputValueContextType = {
   inputBarRef: React.RefObject<HTMLInputElement>
 }
 
-type OutputContainerContextType = {
-  scrollRef: React.RefObject<HTMLDivElement>
+// type OutputContainerContextType = {
+export interface OutputContainerContextType{
+  scrollRef?: React.RefObject<HTMLDivElement>
   displayType: {type : 'rows' | 'card'}
   setDisplayType: React.Dispatch<React.SetStateAction<DisplayType>>
 }

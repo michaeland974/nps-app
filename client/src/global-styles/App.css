@@ -21,14 +21,15 @@
   --fs-xl: clamp(1.75rem, 4vw, 2rem);
   --fs-600: clamp(1.5rem, 3vw, 1.75rem);
   --fs-500: clamp(1rem, 2.5vw, 1.5rem);
-  --fs-400: clamp(0.95rem, 2vw, 1.25rem);
+  --fs-400: clamp(14px, 2vw, 17px);
 
   height: 100svh;
   height:100vh; 
   font-family: Jost;
   font-size: 1rem;
-  background-image: url('./svg/peaks-haikei.svg');
-  background-size: cover;
+  background-color: var(--background);
+  /* background-image: url('./svg/peaks-haikei.svg');
+  background-size: cover; */
 }
 
 .App{
