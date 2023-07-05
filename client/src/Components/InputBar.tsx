@@ -5,26 +5,10 @@ import styles from './styles/InputBar.module.css'
 import { classMerger } from "../utils/classMerger";
 import { overflowText } from "../utils/overflowText";
 
-/** handling park names that are too lengthy
- *  for input bar on mobile screen */
-const overflowName = (name: string) => {
-  let isShort = (name.length < 24);
-  const overflowName = (name.substring(0, 24))+"..."
-
-  return (isShort ? name : overflowName)
-}
-
-const overflowName2 = (name: string, overflowValue: number) => {
-  let isShort = (name.length < overflowValue);
-  const overflowName = (name.substring(0, overflowValue))+"..."
-
-  return (isShort ? name : overflowName)
-}
-
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
   const {parkOptions} = useContext(OptionsContext)
-  const {inputValue, setInputValue, inputBarRef} = useContext(InputValueContext)
+  const {inputValue, dispatch, inputBarRef} = useContext(InputValueContext)
   const {scrollRef} = useContext(OutputContainerContext)
 
   const handlePointerEvents = (eventRef: React.RefObject<HTMLDivElement>) => {
@@ -35,8 +19,7 @@ export const InputBar: React.FC = () => {
     return {add, remove}
   }
 
-  //disable outer click events when dropdown is open
-  useEffect(() => {
+  useEffect(() => { //disable outer click events when dropdown is open
     const {add, remove} = handlePointerEvents(scrollRef!)
     isOpen ? add() : remove();
   }, [isOpen])
@@ -46,22 +29,22 @@ export const InputBar: React.FC = () => {
   }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    dispatch({type: 'value', payload: e.target.value})
     if(inputValue !== ''){
       e.stopPropagation();
       setOpen(true)
     }
   }
 
-  const onOptionSelect = (option:string) => {
-    setInputValue(option)
+  const onOptionSelect = (option: string) => {
+    dispatch({type: 'value', payload: option})
     setOpen(false);
   }
 
   const clearInput = (e: MouseEvent) => {
       e.stopPropagation()
       setOpen(true)
-      setInputValue(""); 
+      dispatch({type: 'value', payload: ""})
       inputBarRef.current?.focus();//input ref necessary to prevent onblur bug
   }
 

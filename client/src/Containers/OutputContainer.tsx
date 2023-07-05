@@ -44,18 +44,15 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
 
 export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
   const [endpoint, setEndpoint] = useState("recent")
-  const {parkOptions} = useContext(OptionsContext)
-  const [{ response, state, dispatch,
-           handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
   const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
-  
-  const [scrollPos, setScrollPos] = useState(0)
-  const {scrollRef, 
-         displayType, 
-         setDisplayType} = useContext(OutputContainerContext)
   const [cardProps, setCardProps] = useState<Article>({}); 
-    
-   
+  const [scrollPos, setScrollPos] = useState(0)
+  const {parkOptions} = useContext(OptionsContext)
+  const {scrollRef, displayType, 
+         dispatch: inputDispatcher} = useContext(OutputContainerContext)
+  const [{response, state, handleNewsData,
+          dispatch: fetchDispatcher }] = useFetch(`/api/${endpoint}`, [endpoint]) 
+  
   useEffect(() => {
     if(endpoint !== 'recent'){
       setNewsType({type: 'park'})
@@ -69,19 +66,19 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
 
   useEffect(() => {
     if(scrollRef && scrollRef.current){
-      if(displayType.type === 'rows'){
-        scrollRef.current.style.overflow= 'scroll'
-        scrollRef.current.scrollTo(0, scrollPos)
+      if(displayType === 'rows'){
+      scrollRef.current.style.overflow= 'scroll'
+      scrollRef.current.scrollTo(0, scrollPos)
       }
-      else if(displayType.type === 'card'){
-        scrollRef.current.style.overflow = 'hidden';
-        scrollRef.current.scrollTo(0, 0) 
+      else if(displayType === 'card'){
+      scrollRef.current.style.overflow = 'hidden';
+      scrollRef.current.scrollTo(0, 0) 
       }
     }
   }, [displayType])
 
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {
-    if(displayType.type === 'rows'){
+    if(displayType === 'rows'){
       setScrollPos(e.currentTarget.scrollTop);
     }
   }
@@ -102,7 +99,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
 
   const handleRowClick = (obj: Article, parkName: string) => {
     passProps(obj, parkName)
-    setDisplayType({type: 'card'})  
+    inputDispatcher({type: 'view', payload: 'card'}) 
   }
 
   const RowDisplayMapped = (displayList: Article[]) => {                 
@@ -149,9 +146,9 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
       case 'rows':
         return RowDisplayMapped(displayList)
       case 'card':
-        return ( <Card onClick={() => {setDisplayType({type: 'rows'})}}
-                       type={displayType.type}
-                            {...cardProps} />)
+        return ( <Card onClick={() => {inputDispatcher({type: 'view', payload: 'rows'})}}
+                       type={displayType as 'rows' | 'card'}
+                        {...cardProps} />)
     }
   }
 
@@ -161,13 +158,13 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
          onScroll={handleScroll}>
       <div className={styles['header-container']}>
         <ChipGroup newsType={newsType}
-                   setDisplayType={setDisplayType}
-                   dispatch={dispatch}
-                   state={state}
-                   setNewsType={setNewsType}/>
+                   setNewsType={setNewsType}
+                   dispatchers={{input: inputDispatcher, 
+                                 fetched: fetchDispatcher}}
+                   state={state}/>
       </div>
       <>
-        {renderDisplaySwitch(displayType.type, 
+        {renderDisplaySwitch(displayType, 
                              state.newsDisplay.selected)}
                               
       </>

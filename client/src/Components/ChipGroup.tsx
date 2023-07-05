@@ -9,23 +9,23 @@ import { Article } from '../Containers/Main'
 type Props = {
   state: ParkState,
   newsType: NewsType
-  dispatch: React.Dispatch<{type: ParkStateKeys, payload: ParkState}>
+  dispatchers: {
+    input: React.Dispatch<{type: "code" | "view" | "value", payload: string}>
+    fetched: React.Dispatch<{type: ParkStateKeys, payload: ParkState}>
+  }
   setNewsType: (value: React.SetStateAction<NewsType>) => void
-  previousParkContent?: Article[]
-  recentNews?: Article[]
-  contentDisplay?: Article[]
-  setDisplayType: (value: React.SetStateAction<DisplayType>) => void
+  setDisplayType?: (value: React.SetStateAction<DisplayType>) => void
 }
 
 export const ChipGroup: React.FC<Props> = ({...props}) => {
-  const {dispatch, setNewsType} = props;
+  const {dispatchers, setNewsType} = props;
   const {newsDisplay} = props.state;
   
   const handleClick = (newsType: NewsType) => {
     setNewsType(newsType)
     
     if(newsType.type==='recent'){
-      dispatch({type: 'previous', payload: {
+      dispatchers.fetched({type: 'previous', payload: {
         ...props.state,
         newsDisplay: {...newsDisplay,
           selected: newsDisplay.recent,
@@ -34,14 +34,14 @@ export const ChipGroup: React.FC<Props> = ({...props}) => {
       })
     }
     else if(newsType.type==='park'){
-      dispatch({type: 'selected', payload: {
+      dispatchers.fetched({type: 'selected', payload: {
         ...props.state,
         newsDisplay: {...newsDisplay,
           selected: newsDisplay.previous,
         }}
       })
     }
-    props.setDisplayType({type: 'rows'})
+    dispatchers.input({type: 'view', payload: 'rows'})
   }
 
   const renderArticleQuantity = (typeCondition: boolean): string => {

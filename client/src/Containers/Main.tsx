@@ -1,9 +1,7 @@
 import * as React from 'react';
 import styles from './styles/Main.module.css'
-//Hooks
-import { useState, useEffect, createContext, useRef } from 'react';
+import { useState, useEffect, createContext, useRef, useReducer} from 'react';
 import { useFetch } from '../hooks/useFetch';
-//Containers
 import { InputContainer } from "./InputContainer";
 import { OutputContainer } from "./OutputContainer";
 
@@ -34,10 +32,9 @@ export interface Article{
   relatedParks?: Park[]
 } 
 
-export interface DisplayType{
-  type: 'rows' | 'card'
-  //setDisplayType: React.Dispatch<React.SetStateAction<'rows' | 'card'>>
-}
+export type DisplayType = 'rows' | 'card'
+
+type InputState = Record<'value' | 'code' | 'view', string>
 
 type OptionsContextType = {
   parkOptions: string[][] | []
@@ -45,21 +42,16 @@ type OptionsContextType = {
 
 type InputValueContextType = {
   inputValue: string
-  setInputValue: React.Dispatch<React.SetStateAction<string>>
+  dispatch: React.Dispatch<{type: keyof InputState, payload: string}>
   inputBarRef: React.RefObject<HTMLInputElement>
 }
 
-// type OutputContainerContextType = {
+
 export interface OutputContainerContextType{
   scrollRef?: React.RefObject<HTMLDivElement>
-  displayType: {type : 'rows' | 'card'}
-  setDisplayType: React.Dispatch<React.SetStateAction<DisplayType>>
+  dispatch: React.Dispatch<{type: keyof InputState, payload: string}>
+  displayType: DisplayType | string
 }
-
-// type DisplayTypeContextType = {
-//   displayType: 'rows' | 'card'
-//   setDisplayType: React.Dispatch<React.SetStateAction<displayType>>
-// }
 
 export const OptionsContext = createContext<OptionsContextType>(
   {} as OptionsContextType)
@@ -68,17 +60,38 @@ export const InputValueContext = createContext<InputValueContextType>(
 export const OutputContainerContext = createContext<OutputContainerContextType>(
   {} as OutputContainerContextType)
 
+
+const reducer = (state: InputState, 
+                 action: {type: keyof InputState, payload: string}): InputState => {
+  switch(action.type){
+    case 'value':
+      return{
+        ...state, 
+        value: action.payload
+      }
+    case 'code':
+      return{
+        ...state, 
+        code: action.payload
+      }
+    case 'view':
+      return{
+        ...state,
+        view: action.payload
+      }
+  }
+}
+
 export const Main: React.FC = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [inputValueCode, setInputValueCode] = useState('recent');
-  const [currentPark, setCurrentPark] = useState('')
+  const [inputState, dispatch] = useReducer(reducer, {
+    value: '',
+    code: 'recent',
+    view: 'rows'
+  }); 
   const inputBarRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
-
-  const [{ response, state,
-           //parkOptions, 
-           handleParkOptions }] = useFetch("/api", [])
+  const [{response, state,
+          handleParkOptions}] = useFetch("/api", [])
 
   useEffect(() => {
     handleParkOptions(response.data)
@@ -89,32 +102,27 @@ export const Main: React.FC = () => {
         const parkName = item[0];
         const parkCode = item[1]
       
-      if(parkName === inputValue){
-        setInputValueCode(parkCode)
-        setCurrentPark(parkName)
+      if(parkName === inputState.value){
+        dispatch({type: 'code', payload: parkCode});
       }
     })
   }
 
   return (
-    // <OptionsContext.Provider value={{parkOptions}}>
     <OptionsContext.Provider value={{parkOptions: state.options}}>
-    <InputValueContext.Provider value={{inputValue, 
-                                        setInputValue, 
+    <InputValueContext.Provider value={{inputValue: inputState.value,
+                                        dispatch,
                                         inputBarRef}}>
     <OutputContainerContext.Provider value={{scrollRef, 
-                                             displayType, 
-                                             setDisplayType}}>
+                                             dispatch, 
+                                             displayType: inputState.view, 
+                                             }}>
         <div className={styles.container}>
           <InputContainer onSubmit={() => {
             getParkCodeFromInput(state.options);
-            // getParkCodeFromInput(parkOptions)
-            setDisplayType({type: 'rows'})
-          }}/>
-
-          <OutputContainer inputValueCode={inputValueCode}
-                           setInputValueCode={setInputValueCode}
-                           currentPark={currentPark} />
+            dispatch({type: 'view', payload: 'rows'})
+          }}/>                           
+          <OutputContainer inputValueCode={inputState.code}/>
         </div>
     </OutputContainerContext.Provider>
     </InputValueContext.Provider>

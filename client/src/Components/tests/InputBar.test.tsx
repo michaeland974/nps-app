@@ -14,7 +14,8 @@ const customRender = (ui: React.ReactNode,
 )}
 
 const mockProps = {
-  displayType: {type: "rows"} as DisplayType,
+  displayType: "rows",
+  dispatch: () => null,
   setDisplayType: () => null
 }
 
