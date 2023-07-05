@@ -76,8 +76,8 @@ export const Main: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [displayType, setDisplayType] = useState<DisplayType>({type: 'rows'});
 
-  const [{ response, 
-           parkOptions, 
+  const [{ response, state,
+           //parkOptions, 
            handleParkOptions }] = useFetch("/api", [])
 
   useEffect(() => {
@@ -97,7 +97,8 @@ export const Main: React.FC = () => {
   }
 
   return (
-    <OptionsContext.Provider value={{parkOptions}}>
+    // <OptionsContext.Provider value={{parkOptions}}>
+    <OptionsContext.Provider value={{parkOptions: state.options}}>
     <InputValueContext.Provider value={{inputValue, 
                                         setInputValue, 
                                         inputBarRef}}>
@@ -106,7 +107,8 @@ export const Main: React.FC = () => {
                                              setDisplayType}}>
         <div className={styles.container}>
           <InputContainer onSubmit={() => {
-            getParkCodeFromInput(parkOptions)
+            getParkCodeFromInput(state.options);
+            // getParkCodeFromInput(parkOptions)
             setDisplayType({type: 'rows'})
           }}/>
 

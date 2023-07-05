@@ -1,16 +1,62 @@
-import {useEffect, useState, useCallback} from "react";
+import {useEffect, useState, useCallback, useReducer} from "react";
 import { Json, Park } from "../Containers/Main";
 import { Article } from "../Containers/Main";
 
-interface dataObj {
+interface Payload {
   data?: Promise<Json>
   isLoading: boolean
 }
 
+interface ParkState {
+  options: string[][],
+  newsDisplay: {
+    selected: Article[] | [],
+    recent: Article[]
+  }
+}
+type ParkStateKeys = keyof ParkState | keyof ParkState['newsDisplay']
+
+const reducer = (state: ParkState, action: {type: ParkStateKeys, 
+                                            payload: ParkState}) => {
+  switch(action.type){
+    case 'options':
+      return {
+        ...state,
+        options: action.payload.options
+      }
+    case 'selected':
+      const {selected} = action.payload.newsDisplay;
+      return {
+        ...state,
+        newsDisplay: {
+          ...state.newsDisplay,
+          selected: selected
+        }
+      }
+    case 'recent': 
+      const {recent} = action.payload.newsDisplay
+      return {
+        ...state,
+        newsDisplay: {
+          ...state.newsDisplay,
+          recent: recent
+        }
+      }
+    default: return action.payload;
+  }
+};
+
 export const useFetch = (url: string, 
                          dependencies: [] | [string]) => {
-  const [response, setResponse] = useState<dataObj>({ isLoading: true })                          
-  const [data, setData] = useState<Promise<Json>>()
+  const [response, setResponse] = useState<Payload>({ isLoading: true }) 
+  const [state, dispatch] = useReducer(reducer, {
+    options: [],
+    newsDisplay: {
+      selected: [],
+      recent: []
+    }
+  });                        
+  //const [data, setData] = useState<Promise<Json>>()
   const [contentDisplay, setContentDisplay] = useState<Article[]>([]) 
   const [recentNews, setRecentNews] = useState<Article[]>([])
   const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
@@ -24,7 +70,10 @@ export const useFetch = (url: string,
         const [parkName, parkCode] = [park[0], park[1].parkCode]
         keys.push([parkName, parkCode])
       })
-      setParkOptions(keys)
+      // setParkOptions(keys)
+      
+      dispatch( {type: 'options', 
+                 payload: {...state, options: keys}});
     }
   }
 
@@ -48,10 +97,18 @@ export const useFetch = (url: string,
             }
          }
          if(endpoint === 'recent'){
-          setRecentNews(list)
+         setRecentNews(list)
+          // dispatch({ type: 'recent', 
+          //             payload: {...state, 
+          //             newsDisplay: {...state.newsDisplay, recent: list}}
+          //           })
          }
          
          setContentDisplay(list)
+        // dispatch({ type: 'selected', 
+        //             payload: {...state, 
+        //               newsDisplay: {...state.newsDisplay, selected: list}}
+        //           })
          return list
   }, [])
   
@@ -59,22 +116,23 @@ export const useFetch = (url: string,
     const response = await fetch(url);
     const json: Promise<Json> = (await response.json())
 
-    setData(json)
-    setResponse({ data: json, 
-                  isLoading: false})
-   // return json
+    setResponse({data: json, isLoading: false})
   }
 
   useEffect(() => {
     fetchData()
 
-    return () => setResponse({...data, isLoading: true})
+    return () => setResponse((prevState) => {
+      return { data: prevState.data,
+               isLoading: true }
+    })
   }, dependencies)
   
   return [{ response,
+            state,
             recentNews,
             contentDisplay, setContentDisplay, 
-            parkOptions,
+            //parkOptions,
             handleParkOptions,
             handleNewsData, 
           }];

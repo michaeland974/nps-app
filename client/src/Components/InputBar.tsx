@@ -28,12 +28,10 @@ export const InputBar: React.FC = () => {
   const {scrollRef} = useContext(OutputContainerContext)
 
   const handlePointerEvents = (eventRef: React.RefObject<HTMLDivElement>) => {
-    const add = () => {
-      eventRef && eventRef.current ? eventRef.current.classList.add("no-click") : null
-    };
-    const remove = () => {
-      eventRef && eventRef.current ? eventRef.current.classList.remove("no-click") : null
-    };
+    const add = () => eventRef && eventRef.current ? 
+      eventRef.current.classList.add("no-click") : null;
+    const remove = () => eventRef && eventRef.current ? 
+      eventRef.current.classList.remove("no-click") : null;
     return {add, remove}
   }
 
