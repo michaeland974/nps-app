@@ -43,23 +43,18 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
 }
 
 export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
+  const [endpoint, setEndpoint] = useState("recent")
   const {parkOptions} = useContext(OptionsContext)
+  const [{ response, state, dispatch,
+           handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
+  const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
+  
+  const [scrollPos, setScrollPos] = useState(0)
   const {scrollRef, 
          displayType, 
          setDisplayType} = useContext(OutputContainerContext)
-  const [scrollPos, setScrollPos] = useState(0)
-  
-  const [endpoint, setEndpoint] = useState("recent")
-  const [{ response,
-    recentNews,
-    contentDisplay,
-    setContentDisplay,
-    handleNewsData }] = useFetch(`/api/${endpoint}`, [endpoint]) 
   const [cardProps, setCardProps] = useState<Article>({}); 
     
-  //contentDisplay gets cached, if users toggles between recent/park news
-  const [previousParkContent, setPreviousParkContent] = useState<Article[]>([])
-  const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
    
   useEffect(() => {
     if(endpoint !== 'recent'){
@@ -107,7 +102,8 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
 
   const handleRowClick = (obj: Article, parkName: string) => {
     passProps(obj, parkName)
-    setDisplayType({type: 'card'})  }
+    setDisplayType({type: 'card'})  
+  }
 
   const RowDisplayMapped = (displayList: Article[]) => {                 
     const rowMap = displayList.map((article, i) => {
@@ -130,8 +126,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
       if(response.isLoading){
         return <Loading />
       } 
-      //if user toggles to "park related news" before selecting a park
-      else if(previousParkContent.length===0 && 
+      else if((state.newsDisplay.previous).length===0 && 
               newsType.type==='park' && 
               endpoint === 'recent'){
         return <h1 id={styles["empty-state-message"]}>
@@ -141,13 +136,12 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
         return rowMap
       }
     }
-
-    return (
-      <div className={styles["news-display"]}
-           style={{height: maxHeight}}>
-        {handleLoading()}
-      </div>
-    )
+  return (
+    <div className={styles["news-display"]}
+          style={{height: maxHeight}}>
+      {handleLoading()}
+    </div>
+  )
   }
 
   const renderDisplaySwitch = (type: string, displayList: Article[]) => {
@@ -167,17 +161,15 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
          onScroll={handleScroll}>
       <div className={styles['header-container']}>
         <ChipGroup newsType={newsType}
-                   setNewsType={setNewsType} 
-                   previousParkContent={previousParkContent}
-                   setPreviousParkContent={setPreviousParkContent}
-                   recentNews={recentNews}
-                   contentDisplay={contentDisplay}
-                   setContentDisplay={setContentDisplay}
-                   setDisplayType={setDisplayType}/>
+                   setDisplayType={setDisplayType}
+                   dispatch={dispatch}
+                   state={state}
+                   setNewsType={setNewsType}/>
       </div>
       <>
         {renderDisplaySwitch(displayType.type, 
-                              contentDisplay)}
+                             state.newsDisplay.selected)}
+                              
       </>
     </div>
     )

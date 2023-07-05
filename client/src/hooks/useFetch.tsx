@@ -7,17 +7,19 @@ interface Payload {
   isLoading: boolean
 }
 
-interface ParkState {
+export interface ParkState {
   options: string[][],
   newsDisplay: {
     selected: Article[] | [],
-    recent: Article[]
+    recent: Article[],
+    previous: Article[]
   }
 }
-type ParkStateKeys = keyof ParkState | keyof ParkState['newsDisplay']
+export type ParkStateKeys = keyof ParkState | keyof ParkState['newsDisplay']
 
 const reducer = (state: ParkState, action: {type: ParkStateKeys, 
                                             payload: ParkState}) => {
+  const {selected, recent} = action.payload.newsDisplay
   switch(action.type){
     case 'options':
       return {
@@ -25,21 +27,29 @@ const reducer = (state: ParkState, action: {type: ParkStateKeys,
         options: action.payload.options
       }
     case 'selected':
-      const {selected} = action.payload.newsDisplay;
       return {
         ...state,
         newsDisplay: {
           ...state.newsDisplay,
-          selected: selected
+          selected: selected,
         }
       }
     case 'recent': 
-      const {recent} = action.payload.newsDisplay
       return {
         ...state,
         newsDisplay: {
           ...state.newsDisplay,
           recent: recent
+        }
+      }
+    case 'previous': 
+      const {previous} = action.payload.newsDisplay
+      return {
+        ...state,
+        newsDisplay: {
+          ...state.newsDisplay,
+          selected: recent,
+          previous: previous
         }
       }
     default: return action.payload;
@@ -53,13 +63,10 @@ export const useFetch = (url: string,
     options: [],
     newsDisplay: {
       selected: [],
-      recent: []
+      recent: [],
+      previous: []
     }
   });                        
-  //const [data, setData] = useState<Promise<Json>>()
-  const [contentDisplay, setContentDisplay] = useState<Article[]>([]) 
-  const [recentNews, setRecentNews] = useState<Article[]>([])
-  const [parkOptions, setParkOptions] = useState<Array<Array<string>>>([])
 
   const handleParkOptions = async(obj: Promise<Json> | undefined) => {
     const keys: Array<Array<string>> = [];
@@ -69,47 +76,39 @@ export const useFetch = (url: string,
       Object.entries(parkList).map((park, i) => {
         const [parkName, parkCode] = [park[0], park[1].parkCode]
         keys.push([parkName, parkCode])
-      })
-      // setParkOptions(keys)
-      
+      })      
       dispatch( {type: 'options', 
                  payload: {...state, options: keys}});
     }
   }
 
-  const handleNewsData = useCallback( 
-    // async(obj: Promise<Json> | undefined) => {
-      async(obj: Promise<Json> | undefined, endpoint: string) => {
-
-       const data: Article[] | undefined = (await obj)?.data
-       let list: Article[] = [];
- 
-         if(data !== undefined && data?.length !== 0){
-            try{
-              list = data!.slice(0, 25);
-            } 
-            catch(error){
-              if (error instanceof Error) {
-                return {
-                  message: error.message,
-                };
-              }
-            }
-         }
-         if(endpoint === 'recent'){
-         setRecentNews(list)
-          // dispatch({ type: 'recent', 
-          //             payload: {...state, 
-          //             newsDisplay: {...state.newsDisplay, recent: list}}
-          //           })
-         }
-         
-         setContentDisplay(list)
-        // dispatch({ type: 'selected', 
-        //             payload: {...state, 
-        //               newsDisplay: {...state.newsDisplay, selected: list}}
-        //           })
-         return list
+  const handleNewsData = useCallback(async(obj: Promise<Json> | undefined, 
+                                           endpoint: string) => {
+    const data: Article[] | undefined = (await obj)?.data
+    let list: Article[] = [];
+      if(data !== undefined && data?.length !== 0){
+        try{
+          list = data!.slice(0, 25);
+        } 
+        catch(error){
+          if (error instanceof Error) {
+            return {
+              message: error.message,
+            };
+          }
+        }
+      }
+    if(endpoint === 'recent'){
+      dispatch({ type: 'recent', 
+                  payload: {...state, 
+                  newsDisplay: {...state.newsDisplay, recent: list}}
+                })
+    }
+    dispatch({ type: 'selected', 
+                payload: {...state, 
+                newsDisplay: {...state.newsDisplay, selected: list}}
+              })
+    return list
   }, [])
   
   const fetchData = async() => {
@@ -128,12 +127,6 @@ export const useFetch = (url: string,
     })
   }, dependencies)
   
-  return [{ response,
-            state,
-            recentNews,
-            contentDisplay, setContentDisplay, 
-            //parkOptions,
-            handleParkOptions,
-            handleNewsData, 
-          }];
+  return [{ response, state, dispatch, 
+            handleParkOptions, handleNewsData }];
 } 
