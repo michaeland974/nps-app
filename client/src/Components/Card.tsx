@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './styles/Card.module.css'
-import { Article } from '../Containers/Main'
 import { renderDate } from '../utils/renderDate'
-import { DisplayType } from '../Containers/OutputContainer'
+import { Article, ViewToggle } from '../interfaces/interfaces'
 
-interface Props extends Article, DisplayType{
+interface Props extends Article{
   onClick?: (React.MouseEventHandler<HTMLButtonElement>)
+  type: ViewToggle
 }
 
 const Placeholder = () => {

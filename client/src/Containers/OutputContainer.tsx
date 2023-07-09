@@ -1,14 +1,10 @@
 import * as React from 'react';
 import styles from './styles/OutputContainer.module.css'
-import { OptionsContext, OutputContainerContext } from './../Containers/Main';
-//Utils
-import { classMerger } from '../utils/classMerger';
+import { OptionsContext, OutputContainerContext } from './../interfaces/contexts';
 import { renderDate } from '../utils/renderDate';
-//Hooks
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useFetch } from '../hooks/useFetch';
-//Components
-import { Article } from './Main';
+import { Article, NewsToggle, ViewToggle } from '../interfaces/interfaces';
 import { RowDisplay } from '../Components/RowDisplay';
 import { Card } from '../Components/Card';
 import { Loading } from '../Components/Loading';
@@ -18,14 +14,6 @@ type Props = {
  inputValueCode: string,
  setInputValueCode?: React.Dispatch<React.SetStateAction<string>>
  currentPark?: string
-}
-
-export interface DisplayType {
-  type: 'rows' | 'card'
-}
-
-export interface NewsType {
-  type: 'recent' | 'park'
 }
 
 // json response from API does not include park name property
@@ -44,18 +32,18 @@ const getParkNameFromCode = ( options: Array<Array<string>>,
 
 export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
   const [endpoint, setEndpoint] = useState("recent")
-  const [newsType, setNewsType] = useState<NewsType>({type: 'recent'});
+  const [newsType, setNewsType] = useState<NewsToggle>('recent');
   const [cardProps, setCardProps] = useState<Article>({}); 
   const [scrollPos, setScrollPos] = useState(0)
-  const {parkOptions} = useContext(OptionsContext)
-  const {scrollRef, displayType, 
+  const {list: parkOptions} = useContext(OptionsContext)
+  const {scrollRef, view: displayToggle, 
          dispatch: inputDispatcher} = useContext(OutputContainerContext)
   const [{response, state, handleNewsData,
           dispatch: fetchDispatcher }] = useFetch(`/api/${endpoint}`, [endpoint]) 
   
   useEffect(() => {
     if(endpoint !== 'recent'){
-      setNewsType({type: 'park'})
+      setNewsType('park')
     }
     handleNewsData(response.data, endpoint)
   }, [response])
@@ -66,19 +54,19 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
 
   useEffect(() => {
     if(scrollRef && scrollRef.current){
-      if(displayType === 'rows'){
+      if(displayToggle === 'rows'){
       scrollRef.current.style.overflow= 'scroll'
       scrollRef.current.scrollTo(0, scrollPos)
       }
-      else if(displayType === 'card'){
+      else if(displayToggle === 'card'){
       scrollRef.current.style.overflow = 'hidden';
       scrollRef.current.scrollTo(0, 0) 
       }
     }
-  }, [displayType])
+  }, [displayToggle])
 
   const handleScroll = (e: React.UIEvent<HTMLElement>) => {
-    if(displayType === 'rows'){
+    if(displayToggle === 'rows'){
       setScrollPos(e.currentTarget.scrollTop);
     }
   }
@@ -124,7 +112,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
         return <Loading />
       } 
       else if((state.newsDisplay.previous).length===0 && 
-              newsType.type==='park' && 
+              newsType==='park' && 
               endpoint === 'recent'){
         return <h1 id={styles["empty-state-message"]}>
                 Select a park
@@ -147,7 +135,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
         return RowDisplayMapped(displayList)
       case 'card':
         return ( <Card onClick={() => {inputDispatcher({type: 'view', payload: 'rows'})}}
-                       type={displayType as 'rows' | 'card'}
+                       type={displayToggle as ViewToggle}
                         {...cardProps} />)
     }
   }
@@ -164,7 +152,7 @@ export const OutputContainer: React.FC<Props> = ({inputValueCode, }) => {
                    state={state}/>
       </div>
       <>
-        {renderDisplaySwitch(displayType, 
+        {renderDisplaySwitch(displayToggle, 
                              state.newsDisplay.selected)}
                               
       </>

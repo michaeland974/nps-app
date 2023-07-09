@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styles from './styles/InputContainer.module.css'
 import {useRef} from "react";
-//Components
 import { InputBar } from "../Components/InputBar";
 import { Header } from '../Components/Header';
 

@@ -1,22 +1,11 @@
 import {useEffect, useState, useCallback, useReducer} from "react";
-import { Json, Park } from "../Containers/Main";
-import { Article } from "../Containers/Main";
+import { JSON } from "../interfaces/interfaces";
+import { Article, ParkState, ParkStateKeys } from "../interfaces/interfaces";
 
 interface Payload {
-  data?: Promise<Json>
+  data?: Promise<JSON>
   isLoading: boolean
 }
-
-export interface ParkState {
-  options: string[][],
-  newsDisplay: {
-    selected: Article[] | [],
-    recent: Article[],
-    previous: Article[]
-  }
-}
-export type ParkStateKeys = keyof ParkState | keyof ParkState['newsDisplay']
-
 const reducer = (state: ParkState, action: {type: ParkStateKeys, 
                                             payload: ParkState}) => {
   const {selected, recent} = action.payload.newsDisplay
@@ -68,7 +57,7 @@ export const useFetch = (url: string,
     }
   });                        
 
-  const handleParkOptions = async(obj: Promise<Json> | undefined) => {
+  const handleParkOptions = async(obj: Promise<JSON> | undefined) => {
     const keys: Array<Array<string>> = [];
     const parkList = await obj
 
@@ -82,7 +71,7 @@ export const useFetch = (url: string,
     }
   }
 
-  const handleNewsData = useCallback(async(obj: Promise<Json> | undefined, 
+  const handleNewsData = useCallback(async(obj: Promise<JSON> | undefined, 
                                            endpoint: string) => {
     const data: Article[] | undefined = (await obj)?.data
     let list: Article[] = [];
@@ -113,7 +102,7 @@ export const useFetch = (url: string,
   
   const fetchData = async() => {
     const response = await fetch(url);
-    const json: Promise<Json> = (await response.json())
+    const json: Promise<JSON> = (await response.json())
 
     setResponse({data: json, isLoading: false})
   }

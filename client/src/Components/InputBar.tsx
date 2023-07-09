@@ -1,14 +1,14 @@
 import * as React from "react"
-import {MouseEvent, useContext, useState, useRef, useEffect} from "react";
-import { OptionsContext, InputValueContext, OutputContainerContext } from './../Containers/Main';
+import {MouseEvent, useContext, useState, useEffect} from "react";
+import { OptionsContext, InputValueContext, OutputContainerContext } from './../interfaces/contexts';
 import styles from './styles/InputBar.module.css'
 import { classMerger } from "../utils/classMerger";
 import { overflowText } from "../utils/overflowText";
 
 export const InputBar: React.FC = () => {
   const [isOpen, setOpen] = useState(false)
-  const {parkOptions} = useContext(OptionsContext)
-  const {inputValue, dispatch, inputBarRef} = useContext(InputValueContext)
+  const {list: parkOptions} = useContext(OptionsContext)
+  const {value: inputValue, dispatch, inputBarRef} = useContext(InputValueContext)
   const {scrollRef} = useContext(OutputContainerContext)
 
   const handlePointerEvents = (eventRef: React.RefObject<HTMLDivElement>) => {

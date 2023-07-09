@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { InputBar } from '../InputBar'
-import { OutputContainerContext, 
-         OutputContainerContextType, DisplayType } from '../../Containers/Main'
+import { OutputContainerContext, OutputContainerContextType } from './../../interfaces/contexts'
 import { render, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
@@ -14,7 +13,7 @@ const customRender = (ui: React.ReactNode,
 )}
 
 const mockProps = {
-  displayType: "rows",
+  view: "rows",
   dispatch: () => null,
   setDisplayType: () => null
 }

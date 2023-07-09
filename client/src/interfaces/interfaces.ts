@@ -5,7 +5,7 @@ export interface Park {
   url?: string
 }
 
-export interface Json extends Object{
+export interface JSON extends Object{
   data?: Object[],
   parkName: Park
 }
@@ -29,6 +29,15 @@ export type ViewToggle = 'rows' | 'card'
 
 export type NewsToggle = 'recent' | 'park'
 
-export interface NewsType {
-  type: 'recent' | 'park'
+export interface ParkState {
+  options: string[][],
+  newsDisplay: {
+    selected: Article[] | [],
+    recent: Article[],
+    previous: Article[]
+  }
 }
+export type ParkStateKeys = keyof ParkState | keyof ParkState['newsDisplay']
+
+export type InputState = Record<'value' | 'code' | 'view', string>
+

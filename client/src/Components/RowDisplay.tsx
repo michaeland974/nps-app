@@ -1,15 +1,12 @@
 import * as React from 'react'
 import styles from './styles/RowDisplay.module.css'
-//Components
-import { Article } from '../Containers/Main'
+import { Article } from '../interfaces/interfaces'
 
 interface Props extends Article {
   onClick?: (React.MouseEventHandler<HTMLDivElement>)
   tabIndex?: number
 }
 
-//conditional on input of park
-//dont need title and 
 export const RowDisplay: React.FC<Props> = ({parkName, title, releaseDate, onClick, tabIndex}) => {
   return(
     <div className={styles["row"]}
