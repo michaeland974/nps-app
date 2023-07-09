@@ -120,10 +120,9 @@ export const useFetch = (url: string,
 
   useEffect(() => {
     fetchData()
-
     return () => setResponse((prevState) => {
       return { data: prevState.data,
-               isLoading: true }
+                isLoading: true }
     })
   }, dependencies)
   

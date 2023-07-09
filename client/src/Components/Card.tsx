@@ -1,9 +1,6 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import styles from './styles/Card.module.css'
-import { overflowText } from '../utils/overflowText'
-//Components
-import { Loading } from './Loading'
 import { Article } from '../Containers/Main'
 import { renderDate } from '../utils/renderDate'
 import { DisplayType } from '../Containers/OutputContainer'
@@ -23,23 +20,11 @@ const Image = ({...props}) => {
               crossOrigin="anonymous"
               src={props.url}
               loading="eager"
-              alt="display image for news release" ></img>
+              alt="display"></img>
 }
 
 export const Card: React.FC<Props> = ({...props}) => {
   const [isImageAvailable, setImageAvailability] = useState<boolean>()
-  const testLorem = `There are many variations of passages of Lorem Ipsum 
-  available, but the majority have suffered alteration in some form,
-   by injected humour, or randomised words which don't look even slig
-   htly believable. If you are going to use a passage of Lorem Ipsum,
-    you need to be sure there isn't anything embarrassing hidden in t
-    he middle of text. All the Lorem Ipsum generators on the Internet
-     tend to repeat predefined chunks as necessary, making this the fi
-     rst true generator on the Internet. It uses a dictionary of over
-      200 Latin words, combined with a handful of model sentence str
-      uctures, to generate Lorem Ipsum which looks reasonable. The g
-      enerated Lorem Ipsum is therefore always free from repetition, 
-              injected humour, or non-characteristic words etc.`
 
   useEffect(() => {
     if(props.image?.url !== ''){
@@ -55,17 +40,13 @@ export const Card: React.FC<Props> = ({...props}) => {
         <div className={styles["header"]}>
           {props.parkName}
         </div>
-        
         <main className={styles["content"]}>
-          <h1 className={styles["title"]}>{overflowText(testLorem, 150)}</h1>
-          {/* <h1 className={styles["title"]}>{props.title}</h1> */}
+          <h1 className={styles["title"]}>{props.title}</h1>
             {isImageAvailable ? <Image url={props.image?.url}/>: 
                                 <Placeholder />}
-          {/* <p className={styles["abstract"]}>{props.abstract}</p> */}
-          <p className={styles["abstract"]}>{testLorem}</p>
+          <p className={styles["abstract"]}>{props.abstract}</p>
           <span id={styles["date"]}>{renderDate(props.releaseDate)}</span>            
         </main>
-        
         <div className={styles["footer"]}>
           <button id={styles["previous"]}
                   onClick={props.onClick}></button>  

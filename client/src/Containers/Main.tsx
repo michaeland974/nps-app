@@ -127,5 +127,5 @@ export const Main: React.FC = () => {
     </OutputContainerContext.Provider>
     </InputValueContext.Provider>
     </OptionsContext.Provider>
-    )
+  )
 }
