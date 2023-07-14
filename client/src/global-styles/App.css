@@ -23,13 +23,9 @@
   --fs-500: clamp(1rem, 2.5vw, 1.5rem);
   --fs-400: clamp(14px, 2vw, 17px);
 
-  height: 100svh;
-  height:100vh; 
   font-family: Jost;
   font-size: 1rem;
   background-color: var(--background);
-  /* background-image: url('./svg/peaks-haikei.svg');
-  background-size: cover; */
 }
 
 .App{
@@ -37,10 +33,8 @@
   flex-direction: column;
   align-items: center;
   align-content: center;
-
-  height: 100%;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
 }
 
 .no-click {

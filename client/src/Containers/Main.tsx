@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styles from './styles/Main.module.css'
 import { useEffect, useRef, useReducer} from 'react';
 import { useFetch } from '../hooks/useFetch';
 import { InputContainer } from "./InputContainer";
@@ -62,7 +61,7 @@ export const Main: React.FC = () => {
         <OutputContainerContext.Provider value={{scrollRef, 
                                                  dispatch, 
                                                  view: inputState.view}}>
-            <div className={styles.container}>
+            <div>
               <InputContainer onSubmit={() => {
                 getParkCodeFromInput(state.options);
                 dispatch({type: 'view', payload: 'rows'})
