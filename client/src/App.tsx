@@ -67,13 +67,11 @@ const App = () => {
           <OutputContainerContext.Provider value={{scrollRef, 
                                                    dispatch, 
                                                    view: inputState.view}}>
-            <div>
               <InputContainer onSubmit={() => {
                 getParkCodeFromInput(state.options);
                 dispatch({type: 'view', payload: 'rows'})
               }}/>                           
               <OutputContainer inputValueCode={inputState.code}/>
-            </div>
 
           </OutputContainerContext.Provider>
         </InputValueContext.Provider>

@@ -12,6 +12,7 @@
   scrollbar-width: none; /* Firefox 64 */
 
   padding-right: 5px;
+  width: 100%;
 }
 @media only screen and (min-width: 750px)  {
   .container{
