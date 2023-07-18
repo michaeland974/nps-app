@@ -13,7 +13,7 @@ export const InputContainer: React.FC<Props> = ({onSubmit}) => {
 
   return (
     <div className={styles["container"]}>
-         <span className="desktop-header">
+        <span className="desktop-header">
           <Header />
         </span>
         <div className={styles["flex-wrapper"]}>

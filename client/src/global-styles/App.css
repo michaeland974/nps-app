@@ -52,4 +52,12 @@
   .desktop-header{
     display: block;
   }
+
+  .App{
+    flex-direction: row;
+  }
+
+  .App > * {
+    height: 100%;
+  }
 }
