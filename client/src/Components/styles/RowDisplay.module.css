@@ -3,8 +3,8 @@
   flex-direction: column;
   gap: 1rem;
   
-  background: rgba(51, 170, 51, .2);
-  box-shadow: 1.2px 2.4px 2.4px hsl(0deg 0% 0% / 0.46);
+  color: var(--contrast);
+  background: var(--secondary-with-opacity);
   border-radius: 10px;
   cursor: pointer;
   padding-top: 1rem;
@@ -13,9 +13,8 @@
 
 .row:hover, 
 .row:focus{
-  background-color: var(--secondary);
+  background-color: var(--first);
   box-shadow: 4px 4px 10px 5px hsl(0deg 0% 0% / 0.46);
-
 }
 
 /*increase font size ?*/
@@ -30,11 +29,8 @@
 }
 
 .park-name{
-  color: black;
-  background: var(--contrast);
   font-family: Jost;
   font-weight: bold;
-  border-bottom: 6px solid var(--highlight);
   
   padding: 0.75rem 1rem 0.75rem 1.5rem;
 }
@@ -47,7 +43,6 @@
 }
 
 .date{
-  color: var(--grey);
   font-style: italic;
 }
 
